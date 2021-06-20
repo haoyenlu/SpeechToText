@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Speech to text{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Speech To Text</h1>
+    <button id="recordBtn" class="btn">Record</button>
+    <button id="stopBtn" class="btn" disabled>Stop</button>
+    <p id="format"></p>
+    <div id="response"></div>
+</div>
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="{{ url_for('static',filename="app.js") }}"></script>
+{% endblock %}
