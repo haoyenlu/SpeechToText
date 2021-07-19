@@ -100,7 +100,6 @@ function stopRecording() {
     stopBtn.disabled = true;
     recordBtn.disabled = false;
 
-    getResponse = false;
 
     gumStream.getAudioTracks()[0].stop();
     audioContext.close();
