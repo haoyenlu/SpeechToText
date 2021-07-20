@@ -10,8 +10,6 @@ import eventlet
 from eventlet import tpool
 from eventlet import greenthread
 
-
-from google.cloud import speech
 from SpeechClient import SpeechClientBridge
 from speechRecognition import SpeechRecognizer 
 
@@ -22,7 +20,6 @@ async_mode = 'eventlet'
 
 if async_mode == 'eventlet':
     eventlet.monkey_patch()
-    print("monkey patched")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
@@ -51,20 +48,6 @@ def on_sample_rate(data):
 def on_start_recording():
     recognizer[request.sid] = SpeechRecognizer(_result_handler,request.sid)
     #thread = eventlet.spawn(tpool.execute,recognizer[request.sid].recognize)
-    #bridges[request.sid] = SpeechClientBridge(_response_handler,request.sid)
-    #recognizer[request.sid] = SpeechRecognizer(_result_handler,request.sid)
-    #t1 = eventlet.spawn(tpool.execute,bridges[request.sid].start)
-    #t2 = eventlet.spawn(tpool.execute,recognizer[request.sid].recognize)
-    #t1 = threading.Thread(target = bridges[request.sid].start)
-    #t2 = threading.Thread(target = recognizer[request.sid].recognize)
-    #t1.start()
-    #t2.start()
-    #t1 = socketio.start_background_task(target=bridges[request.sid].start)
-    #t2 = socketio.start_background_task(target=recognizer[request.sid].recognize)
-    #global thread
-    #if thread is None:
-    #    thread = threading.Thread(target = bridges[request.sid].start)
-    #    thread.start()
     emit('reply','start recording')
 
 @socketio.on('micBinaryStream',namespace='/test')
@@ -77,8 +60,7 @@ def on_micBinaryStream(data):
 def on_stop_recording():
     recognizer[request.sid].slice_buffer()
     results = recognizer[request.sid].recognize_sentence()
-    print(results)
-    emit('reply','finish sentence.')
+    emit('result',results)
 
 
 def _response_handler(sid,response):

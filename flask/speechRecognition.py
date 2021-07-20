@@ -92,49 +92,7 @@ class SpeechRecognizer:
         print(f"{self._sid} recognizer start")
         while not self._ended or not self._audio_queue.empty():
             while not self._audio_queue.empty():
-                buff = self._audio_queue.get(block=False)
-                if buff is None :
-                    return
-
-                audio_data = sr.AudioData(buff,self._sample_rate,self._sample_width)
-
-                # recognize from google speech recognition
-                try:
-                    google_result = r.recognize_google(audio_data)
-                except sr.UnknownValueError:
-                    google_result = "Google Speech Recognition could not understand audio"
-                except sr.RequestError as e:
-                    google_result = "Could not request results from Google Speech Recognition service; {0}".format(e)
-
-
-                
-                # recognize from IBM speech to text
-                try:
-                    ibm_result = r.recognize_ibm(audio_data,username=IBM_USERNAME,password=IBM_PASSWORD)
-                except sr.UnknownValueError:
-                    ibm_result = "IBM Speech to Text could not understand audio"
-                except sr.RequestError as e:
-                    ibm_result = "Could not request results from IBM Speech to Text service; {0}".format(e)
-                
-
-                #recognize from houndify 
-                try:
-                    houndify_result = r.recognize_houndify(audio_data, client_id=HOUNDIFY_ID, client_key=HOUNDIFY_KEY)
-                except sr.UnknownValueError:
-                    houndify_result = "Houndify could not understand audio"
-                except sr.RequestError as e:
-                    houndify_result = "Could not request results from Houndify service; {0}".format(e)
-
-                #recognize from wit
-                try:
-                    wit_result = r.recognize_wit(audio_data, key=WIT_KEY)
-                except sr.UnknownValueError:
-                    wit_result = "Wit could not understand audio"
-                except sr.RequestError as e:
-                    wit_result = "Could not request results from Wit service; {0}".format(e)
-
-
-                results = {"google_result":google_result,"ibm_result":ibm_result,"houndify_result":houndify_result,"wit_result":wit_result}
+                results = self.recognize_sentence()
                 self._result_handler(self._sid,results)
 
 

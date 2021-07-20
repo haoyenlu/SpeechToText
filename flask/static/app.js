@@ -1,10 +1,42 @@
 URL = window.URL || window.webkitURL;
 
+var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
+var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
+var recognition = new SpeechRecognition();
+recognition.continuous = true;
+recognition.interimResults = true;
+
+var final_transcript = '';
+
+var recognizing = false;
+recognition.onresult = function(event){
+    var interim_transcript = '';
+    for (var i = event.resultIndex; i < event.results.length ; i++){
+        if (event.results[i].isFinal) {
+            final_transcript += ' ' + event.results[i][0].transcript;
+        } else {
+            interim_transcript += event.results[i][0].transcript;
+        }
+    }
+    $('#final_span').html(final_transcript);
+    $('#interim_span').html(interim_transcript);
+}
+recognition.onstart = function() {
+    recognizing = true;
+}
+recognition.onend = function() {
+    recognizing = false;
+}
+
+let two_line = /\n\n/g;
+let one_line = /\n/g;
+function linebreak(s)   {
+    return s.replace(two_line,'<p></p>').replace(one_line,'<br>')
+}
+
 var gumStream;
 var rec;
 var source;
-
-var getResponse = true
 
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext;
@@ -23,7 +55,6 @@ var socket = null;
 
 function startRecording() { 
     console.log("recordBtn clicked");
-    // Connect to server when record button clicked
     if (socket == null){
         socket = io.connect('http://' + document.domain + ':' + location.port + namespace)
         socket.on('connect',function(){
@@ -53,15 +84,13 @@ function startRecording() {
         })
         socket.on('result',function(data){
             console.log(data);
-            let child = $('#response div:not(.get_result) ').first()
-            let p = document.createElement("p");
-            p.innerHTML = "<b>Google Result:</b>" + data["google_result"] + "<br/> <b>IBM Result:</b>" + data["ibm_result"] + "<br/><b>Houndify Result:</b>" + data["houndify_result"] + "<br/><b>Wit Result:</b>" + data["wit_result"];
-            p.setAttribute("style","background-color:yellow");
-            child.append(p);
+            let child = $(document.createElement('div')).appendTo('#response');
+            let p = $(document.createElement("p")).html(
+                "<b>Google Result:</b>" + data["google_result"] + "<br/> <b>IBM Result:</b>" + data["ibm_result"] + "<br/><b>Houndify Result:</b>" + data["houndify_result"] + "<br/><b>Wit Result:</b>" + data["wit_result"]  
+            ).appendTo(child);
             child.addClass("get_result");
         })
     } else {
-        socket.disconnect();
         socket.connect();
     }
 
@@ -92,6 +121,14 @@ function startRecording() {
             socket.emit('micBinaryStream',left16);
         }
     })
+
+    if (recognizing) {
+        recognition.stop();
+        return;
+    }
+
+    recognition.lang = 'en_US';
+    recognition.start();
 }
 
 function stopRecording() {
@@ -100,36 +137,11 @@ function stopRecording() {
     stopBtn.disabled = true;
     recordBtn.disabled = false;
 
+    recognition.stop();
 
     gumStream.getAudioTracks()[0].stop();
     audioContext.close();
     socket.emit('stop_recording');
-
-}
-
-
-function createDownloadLink(blob){
-    var url = URL.createObjectURL(blob);
-    var au = document.createElement('audio');
-    var li = document.createElement('li');
-    var link = document.createElement('a');
-
-    var filename = new Date().toISOString();
-
-    au.controls = true;
-    au.src = url;
-
-    link.href = url;
-    link.download = filename+".wav";
-    link.innerHTML = "Save";
-
-    li.appendChild(au);
-
-    li.appendChild(document.createTextNode(filename+".wav"));
-
-    li.appendChild(link);
-
-    document.getElementById("recordingList").appendChild(li);
 }
 
 function convertFloat32ToInt16(buffer) {
@@ -142,4 +154,4 @@ function convertFloat32ToInt16(buffer) {
       }
     }
     return buf.buffer;
-  }
+}
