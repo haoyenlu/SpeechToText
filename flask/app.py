@@ -62,6 +62,11 @@ def on_stop_recording():
     results = recognizer[request.sid].recognize_sentence()
     emit('result',results)
 
+@socketio.on('transcript',namespace='/test')
+def on_transcript(data):
+    alignment , final_result = recognizer[request.sid].final_result(data)
+    jsonify_result = ({'alignment':alignment,'final_result':final_result})
+    emit('final_result',jsonify_result)
 
 def _response_handler(sid,response):
     if not response.results:
@@ -85,6 +90,7 @@ def ack():
 def _result_handler(sid,result):
     print(result)
     socketio.emit("result",result,namespace='/test',to=sid)
+
 
 
     

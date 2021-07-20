@@ -18,6 +18,7 @@ class SpeechRecognizer:
         self._sample_width = 2
         self._sid = sid
         self._result_handler = result_handler
+        self._result_queue = queue.Queue()
 
     def add_stream(self,audio_stream):
         self._buffer.append(audio_stream)
@@ -56,9 +57,7 @@ class SpeechRecognizer:
             google_result = "Google Speech Recognition could not understand audio"
         except sr.RequestError as e:
             google_result = "Could not request results from Google Speech Recognition service; {0}".format(e)
-
-
-        
+            
         # recognize from IBM speech to text
         try:
             ibm_result = r.recognize_ibm(audio_data,username=IBM_USERNAME,password=IBM_PASSWORD)
@@ -66,7 +65,6 @@ class SpeechRecognizer:
             ibm_result = "IBM Speech to Text could not understand audio"
         except sr.RequestError as e:
             ibm_result = "Could not request results from IBM Speech to Text service; {0}".format(e)
-        
 
         #recognize from houndify 
         try:
@@ -85,7 +83,28 @@ class SpeechRecognizer:
             wit_result = "Could not request results from Wit service; {0}".format(e)
 
         results = {"google_result":google_result,"ibm_result":ibm_result,"houndify_result":houndify_result,"wit_result":wit_result}
+        self._result_queue.put(results)
         return results
+
+    def final_result(self,transcript):
+        from StringAlign import StringAlign , give_param
+        S = StringAlign()
+        S += transcript
+        results = self._result_queue.get(block=True)
+        results_list = []
+        for key, value in results.items():
+            if "could not understand audio" and "Could not request results" not in value: 
+                results_list.append(value)
+        S += results_list
+        p = give_param('james')
+        S.evaluate(p)
+        x = S.big_anchor_concat_heuristic(p)
+        x = x['word_set']
+        alignment = S.str_big_anchor()
+        weight = [1,1,1,1,1]
+        threshold = 2
+        final_result = " ".join(S.final_result(weight,threshold))
+        return alignment , final_result
 
 
     def recognize(self):

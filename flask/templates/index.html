@@ -6,7 +6,7 @@
 #result {
     font-size: 14px;
     font-weight: bold;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     padding: 15px;
     text-align: left;
     min-height: 150px;
@@ -17,9 +17,9 @@
 
 {% block content %}
 <div class="container">
-    <h1>Speech To Text</h1>
-    <button id="recordBtn" class="btn">Record</button>
-    <button id="stopBtn" class="btn" disabled>Stop</button>
+    <h1 class="display-5">Speech To Text</h1>
+    <button id="recordBtn" class="btn btn-primary">Record</button>
+    <button id="stopBtn" class="btn btn-primary" disabled>Stop</button>
     <div id="result">
         <span id="final_span"></span>
         <span id="interim_span"></span> 

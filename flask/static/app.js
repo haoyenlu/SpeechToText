@@ -1,3 +1,6 @@
+var namespace = '/test';
+var socket = null;
+
 URL = window.URL || window.webkitURL;
 
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
@@ -7,25 +10,29 @@ recognition.continuous = true;
 recognition.interimResults = true;
 
 var final_transcript = '';
-
+var latest_transcript = '';
 var recognizing = false;
 recognition.onresult = function(event){
     var interim_transcript = '';
     for (var i = event.resultIndex; i < event.results.length ; i++){
         if (event.results[i].isFinal) {
-            final_transcript += ' ' + event.results[i][0].transcript;
+            final_transcript +=  event.results[i][0].transcript;
+            latest_transcript += event.results[i][0].transcript;
         } else {
             interim_transcript += event.results[i][0].transcript;
         }
     }
-    $('#final_span').html(final_transcript);
-    $('#interim_span').html(interim_transcript);
+    $('#final_span').html(linebreak(final_transcript));
+    $('#interim_span').html(linebreak(interim_transcript));
 }
 recognition.onstart = function() {
     recognizing = true;
 }
 recognition.onend = function() {
     recognizing = false;
+    socket.emit('transcript',latest_transcript);
+    latest_transcript = '';
+    final_transcript += '<br>';
 }
 
 let two_line = /\n\n/g;
@@ -48,9 +55,6 @@ var response = document.getElementById('response');
 
 recordBtn.addEventListener("click",startRecording);
 stopBtn.addEventListener("click",stopRecording);
-
-var namespace = '/test';
-var socket = null;
 
 
 function startRecording() { 
@@ -84,11 +88,16 @@ function startRecording() {
         })
         socket.on('result',function(data){
             console.log(data);
-            let child = $(document.createElement('div')).appendTo('#response');
+            let child = $(document.createElement('span')).appendTo('#response');
             let p = $(document.createElement("p")).html(
                 "<b>Google Result:</b>" + data["google_result"] + "<br/> <b>IBM Result:</b>" + data["ibm_result"] + "<br/><b>Houndify Result:</b>" + data["houndify_result"] + "<br/><b>Wit Result:</b>" + data["wit_result"]  
             ).appendTo(child);
             child.addClass("get_result");
+        })
+        socket.on('final_result',function(data){
+            let child = $("#response span:not(.get_final)").first();
+            let p = $(document.createElement("pre")).html(data["alignment"]).appendTo(child);
+            child.addClass("get_final");
         })
     } else {
         socket.connect();
@@ -124,7 +133,7 @@ function startRecording() {
 
     if (recognizing) {
         recognition.stop();
-        return;
+        return
     }
 
     recognition.lang = 'en_US';
