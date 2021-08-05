@@ -66,7 +66,7 @@ class Param():
 		return self._lowercast
 	@lowercast.setter
 	def lowercast(self, n):
-		self._use_stem = n
+		self._lowercast = n
 
 class StringAlign():
 	c1, c2, c3 = re.compile(R"([^\w\s'])"), re.compile(R"\s+"), re.compile(R"^\s|\s$")
@@ -146,12 +146,13 @@ class StringAlign():
 				return
 		print('No module in {} has been installed!'.format(', '.join(cls.graph_module_tryorder)))
 	def evaluate(self, param: Param):
+		""" return state after comparing strings """
 		l = self._l
 		n = len(l)
 		state = self.__class__.State(n, dict())
 		if param.use_stem:
 			l = [[stemmer.stem(word, 0, len(word) - 1) for word in s] for s in l]
-		elif param.lowercast:
+		if param.lowercast:
 			l = [[word.lower() for word in s] for s in l]
 		for i, j in combinations(range(n), 2):
 			get = self.__class__.compare(l[i], l[j], param)
@@ -159,19 +160,17 @@ class StringAlign():
 			state.Dict[(i, j)] = get
 		self._state = state
 	def big_anchor_concat_heuristic(self, param: Param, confidence: list = None):
-		"""
-		provisional big-anchor function
-		"""
+		""" provisional big-anchor function """
+
 		if self._state is None: #exception-like condition, maybe NoStateException
 			print('No state is ready!')
 			return
 		state, n = self._state, self._state.length
-		if confidence is None or len(confidence) != n:
+		if confidence is None or len(confidence) != n: 
 			confidence = [param.base_confidence] * n
 		scores = param.score_map(confidence, state)
-		sentences_set = disjoint_set.from_iterable(range(n))
-		word_set = disjoint_set.from_iterable(chain.from_iterable([(i, j) for j in range(len(self._l[i]))] for i in range(n)))
-		#print(word_set)
+		sentences_set = disjoint_set.from_iterable(range(n)) # a disjoint set of sentences
+		word_set = disjoint_set.from_iterable(chain.from_iterable([(i, j) for j in range(len(self._l[i]))] for i in range(n))) # a disjoint set of words in sentences
 		pairs = sorted(state.Dict.keys(), key = (lambda k: scores[k]), reverse = True)
 		for i, j in pairs:
 			if sentences_set.is_same(i, j):
@@ -180,12 +179,11 @@ class StringAlign():
 			for k, l in anchors:
 				word_set.union((i, k), (j, l))
 			sentences_set.union(i, j)
-		#print(word_set)
-		self._big_anchor_state = {'word_set': word_set}
+		self._big_anchor_state = {'word_set': word_set} # words_set put every same word into one set
 		return self._big_anchor_state
 		#this function should return one that contains word_set
 		#sets = list(word_set.sets())
-		#print(sentences_set) #all the sentences should become same
+		#all the sentences should become same
 	def big_anchor_concat_james(self, param: Param, *args, **kwargs):
 		if self._state is None: #exception-like condition, maybe NoStateException
 			print('No state is ready!')
@@ -621,11 +619,10 @@ class StringAlign():
 		"""
 		input two 'string' which is splitted into list of words.
 		output all pairs of indexs which means:
-			(i, j): l1[i] == l2[j]
+			(i, j): l1[i] ==   l2[j]
 		And, (i, j) will be a numpy array and that makes mathematical work easier.
 		"""
-		s = set(l1)
-		s &= set(l2)
+		s = set(l1) & set(l2) # return the same words in two list of words
 		sol = []
 		for c in s:
 			i1, i2 = np.argwhere(np.array(l1) == c).reshape([-1]), np.argwhere(np.array(l2) == c).reshape([-1])
@@ -653,12 +650,12 @@ class StringAlign():
 			now_anchor: meaning which anchor is fixed at the very step.
 		output: ans :: Ans(float, List[anchor]), as the highest similarity, anchors, same as _compare_detail
 		"""
-		if now_anchor is None: #base case
+		if now_anchor is None: # base case 
 			return param.base_point(l1, l2), []
-		left_child = (l1[:now_anchor[0]], l2[:now_anchor[1]])
-		right_child = (l1[(now_anchor[0] + 1):], l2[(now_anchor[1] + 1):])
-		left_anchor = [anchor for anchor in anchors if np.all(anchor < now_anchor)]
-		right_anchor = [anchor - now_anchor - 1 for anchor in anchors if np.all(anchor > now_anchor)]
+		left_child = (l1[:now_anchor[0]], l2[:now_anchor[1]]) # words on the left of the anchor
+		right_child = (l1[(now_anchor[0] + 1):], l2[(now_anchor[1] + 1):]) # words on the right of the anchor
+		left_anchor = [anchor for anchor in anchors if np.all(anchor < now_anchor)] # lisf of anchors on the left child
+		right_anchor = [anchor - now_anchor - 1 for anchor in anchors if np.all(anchor > now_anchor)]  # lisf of anchors on the right child
 		left_ans = cls._compare_detail(*left_child, param, left_anchor, memo)
 		right_ans = cls._compare_detail(*right_child, param, right_anchor, memo)
 		sol_anchor = left_ans.anchors + [now_anchor] + [anchor + now_anchor + 1 for anchor in right_ans.anchors]
@@ -684,7 +681,7 @@ class StringAlign():
 		if hashable_sign not in memo:
 			similarity, anchors_to_choose = param.init_value, []
 			if len(anchors) == 0:
-				simi, use_anchors = cls._compare_split(l1, l2, param, anchors, memo, None) #call base case
+				simi, use_anchors = cls._compare_split(l1, l2, param, anchors, memo, None) # call base case 
 				if simi > similarity:
 					similarity, anchors_to_choose = simi, use_anchors
 			for anchor in anchors: #if executing above, the for-loop will not be executed
@@ -698,7 +695,7 @@ def give_param(way):
 	p = Param()
 	if way == 'wayne':
 		p.init_value = 0.0
-		p.base_point = lambda l1, l2: 1 / (len(l1) + len(l2) + 1)
+		p.base_point = lambda l1, l2: 1 / (len(l1) + len(l2) + 1) # base point is 1 divided by number of words in two lists plus 1 
 		def merge_point(left, right, ans1, ans2):
 			left_len = len(left[0]) + len(left[1])
 			right_len = len(right[0]) + len(right[1])
@@ -706,31 +703,36 @@ def give_param(way):
 			return (left_point * left_len + right_point * right_len + 2) / (left_len + right_len + 2)
 		p.merge_point = merge_point
 	elif way == 'james':
-		p.init_value = -np.inf
-		p.base_point = lambda l1, l2: -(len(l1) + len(l2))
+		p.init_value = -np.inf 
+		p.base_point = lambda l1, l2: -(len(l1) + len(l2)) # base point is negative of number of words in two lists
 		p.merge_point = lambda l, r, a1, a2: a1.similarity + a2.similarity + 2
 	return p
 
 if __name__ == '__main__':
 	S = StringAlign()
+
+
 	S += ['later that day when the princess was sitting at the table something with her coming up the marble stairs',
-	'later that day one that princess was sitting at the table something was heard coming up the marble stairs',
-	'later that day when the princess was sitting at the table something with her coming up the marble stairs',
+	'Later that day one that princess was sitting at the table something was heard coming up the marble stairs']
+	
+	S += ['later that day when the princess was sitting at the table something with her coming up the marble stairs',
 	'later that day when the princess was sitting at the table something was heard coming up the marbles dears']
 
-	p = give_param('james')
+	p = give_param('wayne')
+	p.lowercast = True
+	p.use_stem = True
+
 	S.evaluate(p)
 	print(S)
-	#x = S.big_anchor_concat_james()
+	#x = S.big_anchor_concat_james(p)
 	x = S.big_anchor_concat_heuristic(p)
 	x = x['word_set']
 	print(S.str_big_anchor())
-	#print(x.sets())
+	print(x)
 	#print(x.copy().sets())
-	
 	result = S.final_result([1.5, 1, 1, 1], 2)
-	print(list(result))
+	#print(list(result))
 	#x = S.big_anchor_concat_heuristic(p)
 	#print(S.str_big_anchor())
 	result = S.final_result([1.5, 1, 1, 1], 3)
-	print(list(result))
+	#print(list(result))

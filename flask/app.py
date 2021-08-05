@@ -64,8 +64,8 @@ def on_stop_recording():
 
 @socketio.on('transcript',namespace='/test')
 def on_transcript(data):
-    alignment , final_result = recognizer[request.sid].final_result(data)
-    jsonify_result = ({'alignment':alignment,'final_result':final_result})
+    alignment , final_result = recognizer[request.sid].final_result(data["transcript"],data["threshold"])
+    jsonify_result = ({'alignment':alignment,'final_result':final_result,'origin_result':data["transcript"]})
     emit('final_result',jsonify_result)
 
 def _response_handler(sid,response):

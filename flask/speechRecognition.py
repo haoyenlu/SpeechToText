@@ -86,7 +86,7 @@ class SpeechRecognizer:
         self._result_queue.put(results)
         return results
 
-    def final_result(self,transcript):
+    def final_result(self,transcript,threshold):
         from StringAlign import StringAlign , give_param
         S = StringAlign()
         S += transcript
@@ -97,13 +97,13 @@ class SpeechRecognizer:
                 results_list.append(value)
         S += results_list
         p = give_param('james')
+        p.lowercast = True
+        p.use_stem = True
         S.evaluate(p)
-        x = S.big_anchor_concat_heuristic(p)
-        x = x['word_set']
+        S.big_anchor_concat_heuristic(p)
         alignment = S.str_big_anchor()
         weight = [1,1,1,1,1]
-        threshold = 2
-        final_result = " ".join(S.final_result(weight,threshold))
+        final_result = " ".join(S.final_result(weight,int(threshold)))
         return alignment , final_result
 
 

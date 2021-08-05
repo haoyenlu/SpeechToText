@@ -30,7 +30,8 @@ recognition.onstart = function() {
 }
 recognition.onend = function() {
     recognizing = false;
-    socket.emit('transcript',latest_transcript);
+    var temp = {"transcript":latest_transcript,"threshold":$('#threshold').val()}
+    socket.emit('transcript',temp);
     latest_transcript = '';
     final_transcript += '<br>';
 }
@@ -97,6 +98,8 @@ function startRecording() {
         socket.on('final_result',function(data){
             let child = $("#response span:not(.get_final)").first();
             let p = $(document.createElement("pre")).html(data["alignment"]).appendTo(child);
+            final_transcript = final_transcript.replace(data["origin_result"],data["origin_result"] + " -> " + data["final_result"]);
+            $('#final_span').html(final_transcript);
             child.addClass("get_final");
         })
     } else {

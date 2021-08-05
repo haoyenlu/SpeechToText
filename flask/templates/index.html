@@ -11,6 +11,12 @@
     text-align: left;
     min-height: 150px;
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+#threshold {
+    font-size : 10px;
+    height : 15px;
+    width : 30px;
 }
 {% endblock %}
 
@@ -24,6 +30,8 @@
         <span id="final_span"></span>
         <span id="interim_span"></span> 
     </div>
+    <label for="threshold">threshold:</label>
+    <input type="number" id = "threshold" min="1" max="5" value="2">
     <div id="response"></div>
 </div>
 <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
