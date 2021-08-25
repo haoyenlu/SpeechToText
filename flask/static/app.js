@@ -14,6 +14,7 @@ var latest_transcript = '';
 var recognizing = false;
 recognition.onresult = function(event){
     var interim_transcript = '';
+    console.log(event.results);
     for (var i = event.resultIndex; i < event.results.length ; i++){
         if (event.results[i].isFinal) {
             final_transcript +=  event.results[i][0].transcript;
@@ -61,7 +62,7 @@ stopBtn.addEventListener("click",stopRecording);
 function startRecording() { 
     console.log("recordBtn clicked");
     if (socket == null){
-        socket = io.connect('http://' + document.domain + ':' + location.port + namespace)
+        socket = io.connect('http://' + document.domain + ':' + location.port + namespace,{'timeout':10000,'connect timeout':10000})
         socket.on('connect',function(){
             console.log("connect to: "+ 'http://' + document.domain + ':' + location.port + namespace);
         })
@@ -88,7 +89,6 @@ function startRecording() {
             }
         })
         socket.on('result',function(data){
-            console.log(data);
             let child = $(document.createElement('span')).appendTo('#response');
             let p = $(document.createElement("p")).html(
                 "<b>Google Result:</b>" + data["google_result"] + "<br/> <b>IBM Result:</b>" + data["ibm_result"] + "<br/><b>Houndify Result:</b>" + data["houndify_result"] + "<br/><b>Wit Result:</b>" + data["wit_result"]  
@@ -98,7 +98,9 @@ function startRecording() {
         socket.on('final_result',function(data){
             let child = $("#response span:not(.get_final)").first();
             let p = $(document.createElement("pre")).html(data["alignment"]).appendTo(child);
-            final_transcript = final_transcript.replace(data["origin_result"],data["origin_result"] + " -> " + data["final_result"]);
+            if (data["final_result"] != null) {
+                final_transcript = final_transcript.replace(data["origin_result"],data["final_result"]);
+            }
             $('#final_span').html(final_transcript);
             child.addClass("get_final");
         })

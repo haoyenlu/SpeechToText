@@ -5,6 +5,7 @@ import queue
 import io
 
 import speech_recognition as sr 
+import TextProcessor as tp
 from API_keys import *
 
 r = sr.Recognizer()
@@ -91,19 +92,29 @@ class SpeechRecognizer:
         S = StringAlign()
         S += transcript
         results = self._result_queue.get(block=True)
-        results_list = []
         for key, value in results.items():
             if "could not understand audio" and "Could not request results" not in value: 
-                results_list.append(value)
-        S += results_list
-        p = give_param('james')
+                S += value
+        
+        p = give_param('james') # two options wayne or james
         p.lowercast = True
         p.use_stem = True
         S.evaluate(p)
-        S.big_anchor_concat_heuristic(p)
-        alignment = S.str_big_anchor()
-        weight = [1,1,1,1,1]
-        final_result = " ".join(S.final_result(weight,int(threshold)))
+        try:
+            S.big_anchor_concat_heuristic(p)
+            alignment = S.str_big_anchor()
+            weight = [1,1,1,1,1]
+            final_result = " ".join(S.final_result(weight,int(threshold)))
+        except:
+            alignment = "No alignment"
+            final_result = None
+        
+        if final_result is not None:
+            try:
+                final_result = tp.add_punctuation(final_result)
+            except e:
+                print(e)
+        
         return alignment , final_result
 
 

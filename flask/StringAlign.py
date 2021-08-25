@@ -76,11 +76,13 @@ class StringAlign():
 	State = namedtuple("State", "length Dict")
 	Ans = namedtuple('Ans', "similarity anchors")
 	join = staticmethod(lambda l: " ".join(l))
+
 	def __init__(self, *args):
 		self._state = None
 		self._big_anchor_state = None
 		self._l = []
 		self.push(*args)
+
 	def push(self, *args):
 		l = []
 		for i in args:
@@ -90,22 +92,28 @@ class StringAlign():
 				l.extend(i)
 		l = [self.c3.sub("", self.c2.sub(" ", self.c1.sub(R" \1 ", s))).split() for s in l]
 		self._l.extend(l)
+
 	def push_list(self, l):
 		self.push(l)
+
 	def concat(self, n):
 		self._l.extend(n._l)
+
 	def __iadd__(self, n):
 		if type(n) is not type(self):
 			self.push_list(n)
 		else:
 			self.concat(n)
 		return self
+
 	def __add__(self, n):
 		sol = self.copy() #create a copy
 		sol.__iadd__(n)
 		return sol
+
 	def __radd__(self, n):
 		return self.__add__(n)
+
 	def __str__(self):
 		state, l, join = self._state, self._l, self.join
 		if state is None:
@@ -116,13 +124,16 @@ class StringAlign():
 			ans = state.Dict[(i, j)]
 			s += f"string {(i, j)}\n{join(l[i])}\n{join(l[j])}\nhas similarity {ans.similarity}\nfix points are: {[tuple(i) for i in ans.anchors]}\n\n"
 		return s[:-2]
+
 	@property
 	def sentences(self): #equivalent to self[:]
 		return self[:]
+
 	def __getitem__(self, val):
 		if isinstance(val, slice):
 			return [self.__class__.join(i) for i in self._l[val]]
 		return self.__class__.join(self._l[val])
+
 	def copy(self):
 		"""
 		create a copy of object
@@ -132,6 +143,7 @@ class StringAlign():
 		sol = type(self)()
 		sol._l = self._l.copy() #
 		return sol
+
 	@classmethod
 	def decide_graph_module(cls):
 		if cls.graph_module is not None:
@@ -145,8 +157,11 @@ class StringAlign():
 				cls.graph_module = module
 				return
 		print('No module in {} has been installed!'.format(', '.join(cls.graph_module_tryorder)))
+
 	def evaluate(self, param: Param):
-		""" return state after comparing strings """
+		""" 
+		return state after comparing strings 
+		"""
 		l = self._l
 		n = len(l)
 		state = self.__class__.State(n, dict())
@@ -159,15 +174,18 @@ class StringAlign():
 			#get = get[0], list(get[1])
 			state.Dict[(i, j)] = get
 		self._state = state
-	def big_anchor_concat_heuristic(self, param: Param, confidence: list = None):
-		""" provisional big-anchor function """
 
+	def big_anchor_concat_heuristic(self, param: Param, confidence: list = None):
+		""" 
+		provisional big-anchor function , generate a word set in which put the same words of sentences 
+		"""
 		if self._state is None: #exception-like condition, maybe NoStateException
-			print('No state is ready!')
-			return
+			raise Exception("No State is available")
+
 		state, n = self._state, self._state.length
 		if confidence is None or len(confidence) != n: 
 			confidence = [param.base_confidence] * n
+	
 		scores = param.score_map(confidence, state)
 		sentences_set = disjoint_set.from_iterable(range(n)) # a disjoint set of sentences
 		word_set = disjoint_set.from_iterable(chain.from_iterable([(i, j) for j in range(len(self._l[i]))] for i in range(n))) # a disjoint set of words in sentences
@@ -184,6 +202,7 @@ class StringAlign():
 		#this function should return one that contains word_set
 		#sets = list(word_set.sets())
 		#all the sentences should become same
+
 	def big_anchor_concat_james(self, param: Param, *args, **kwargs):
 		if self._state is None: #exception-like condition, maybe NoStateException
 			print('No state is ready!')
@@ -296,6 +315,7 @@ class StringAlign():
 				word_set.union((s, index), (r_mapping[s_i], index_i))
 		self._big_anchor_state = {'word_set': word_set}
 		return self._big_anchor_state
+
 	@classmethod
 	def _big_anchor_concat_james_word_counter(cls, strings, word_to_count):
 		count = 0
@@ -304,6 +324,7 @@ class StringAlign():
 				if word == word_to_count:
 					count += 1
 		return count
+
 	@classmethod
 	def _big_anchor_concat_james_helper(cls, strings, sticks, shifts = [0, 0, 0, 0], shifts_diff = [0, 0, 0, 0], mode = 'right'):
 		strings_len = [len(s) for s in strings]
@@ -502,26 +523,29 @@ class StringAlign():
 						sticks[i][j][k] += shifts_diff[k]
 
 		return max_score, best_sticks
+
 	def give_graph(self):
 		if self._state is None: #exception-like condition, maybe NoStateException
-			print('No state is ready!')
-			return
-		state, n = self._state, self._state.length
+			raise Exception("No state available")
+
 		if self._big_anchor_state is None:
-			print('No big anchor state is ready!')
-			return
+			raise Exception("No big anchor state available")
+
 		if 'graph' in self._big_anchor_state:
 			return self._big_anchor_state['graph']
+
+		state, n = self._state, self._state.length
 		word_set = self._big_anchor_state['word_set']
 		self.decide_graph_module()
+
 		if self.graph_module == 'networkx':
 			import networkx as nx
 			G = nx.DiGraph()
-			index = word_set.index()
-			origin_word_mapping = defaultdict(list) #adapted for word stemming
+			index = word_set.index() # index is a dictionary that same words (differnet key) have same item
+			origin_word_mapping = defaultdict(list) # adapted for word stemming
 			for i in range(n):
-				G.add_node(index[(i, 0)])
-				origin_word_mapping[index[(i, 0)]].append(self._l[i][0])
+				G.add_node(index[(i, 0)]) # add the first word in each sentence to digraph
+				origin_word_mapping[index[(i, 0)]].append(self._l[i][0]) # map the words
 				for j, word in enumerate(self._l[i][1:], 1):
 					G.add_edge(index[(i, j - 1)], index[(i, j)])
 					origin_word_mapping[index[(i, j)]].append(self._l[i][j])
@@ -531,8 +555,7 @@ class StringAlign():
 					G.nodes[index[(i, j)]]['appearance'].append(i)
 			for i, l in origin_word_mapping.items():
 				"""
-				choose the word to represent
-				only 1 mode now: choose the first appearence
+				choose the word to represent , only 1 mode now: choose the first appearence
 				"""
 				G.nodes[i]['word'] = l[0]
 			self._big_anchor_state['graph'] = G
@@ -567,14 +590,14 @@ class StringAlign():
 		elif self.graph_module is None:
 			print('Failed to draw graph!')
 			return
+
 	def str_big_anchor(self):
-		"""
-		function to return string represent the solution
-		"""
+		""" function to return string represent the solution """
+
 		G = self.give_graph()
 		if G is None:
-			print('Fail to print big anchor.')
-			return
+			raise Exception("No graph available.")
+
 		n = self._state.length
 		if self.graph_module == 'networkx':
 			import networkx as nx
@@ -587,6 +610,7 @@ class StringAlign():
 				for s in node['appearance']:
 					str_list[s][i] = word
 			return ('\n'.join([' '.join(s) for s in str_list]))
+
 		elif self.graph_module == 'pyswip':
 			query = next(G.query(f'all_node({id(self)}, L), topological_sort(L, Sol), grab_word(Sol, Words)'))
 			id_list, words = query['Sol'], [str(i) for i in query['Words']] #query['Words'] is a list of Atom object (this is a problem of pyswip), so call str() to make it string.
@@ -596,11 +620,12 @@ class StringAlign():
 				for q in G.query(f'appear({word_id}, N)'):
 					str_list[q['N']][i] = word
 			return ('\n'.join([' '.join(s) for s in str_list]))
+
 	def final_result(self, weight, threshold):
 		G = self.give_graph()
 		if G is None:
-			print('Fail to get final result.')
-			return
+			raise Exception("No graph available.")
+			
 		if self.graph_module == 'networkx':
 			import networkx as nx
 			id_list = list(nx.algorithms.dag.topological_sort(G))
@@ -610,10 +635,12 @@ class StringAlign():
 			id_list = next(G.query(f'all_node({id(self)}, L), topological_sort(L, Sol)'))['Sol']
 			votes = map(lambda word_id: sum(weight[q['N']] for q in G.query(f'appear({word_id}, N)')), id_list)
 			return (next(G.query(f'word({word_id}, Word)'))['Word'] for vote, word_id in zip(votes, id_list) if vote >= threshold)
+
 	@classmethod
 	def compare(cls, l1: List[str], l2: List[str], param: Param):
 		anchors = cls._anchors(l1, l2)
 		return cls._compare_detail(l1, l2, param, anchors, {})
+
 	@staticmethod
 	def _anchors(l1: List[str], l2: List[str]) -> List[AnchorType]:
 		"""
@@ -628,6 +655,7 @@ class StringAlign():
 			i1, i2 = np.argwhere(np.array(l1) == c).reshape([-1]), np.argwhere(np.array(l2) == c).reshape([-1])
 			sol.extend([np.array(i) for i in product(i1, i2)])
 		return sol
+
 	@classmethod
 	def _compare_split(cls, l1: List[str], l2: List[str], param: Param, anchors: List[AnchorType], memo: dict, now_anchor: AnchorType) -> Tuple[ScoreType, List[AnchorType]]:
 		"""
@@ -661,6 +689,7 @@ class StringAlign():
 		sol_anchor = left_ans.anchors + [now_anchor] + [anchor + now_anchor + 1 for anchor in right_ans.anchors]
 		sol_simi = param.merge_point(left_child, right_child, left_ans, right_ans)
 		return cls.Ans(sol_simi, sol_anchor)
+
 	@classmethod
 	def _compare_detail(cls, l1: List[str], l2: List[str], param: Param, anchors: List[AnchorType], memo: dict) -> Tuple[ScoreType, List[AnchorType]]:
 		"""
@@ -723,12 +752,14 @@ if __name__ == '__main__':
 	p.use_stem = True
 
 	S.evaluate(p)
-	print(S)
+	#print(S)
 	#x = S.big_anchor_concat_james(p)
-	x = S.big_anchor_concat_heuristic(p)
-	x = x['word_set']
-	print(S.str_big_anchor())
-	print(x)
+	try :
+		x = S.big_anchor_concat_heuristic(p)
+		x = x['word_set']
+		S.str_big_anchor()
+	except :
+		print("Error")
 	#print(x.copy().sets())
 	result = S.final_result([1.5, 1, 1, 1], 2)
 	#print(list(result))

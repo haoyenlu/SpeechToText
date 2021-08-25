@@ -68,7 +68,8 @@ def on_transcript(data):
     jsonify_result = ({'alignment':alignment,'final_result':final_result,'origin_result':data["transcript"]})
     emit('final_result',jsonify_result)
 
-def _response_handler(sid,response):
+
+def _response_handler(sid,response): 
     if not response.results:
         return 
 
@@ -84,12 +85,9 @@ def _response_handler(sid,response):
     jsonify_result = ({'transcription':result.alternatives[0].transcript,'is_final':result.is_final})
     socketio.emit("transcription",jsonify_result,namespace='/test',room=sid)
 
-def ack():
-    print("message was received!")
-
 def _result_handler(sid,result):
     print(result)
-    socketio.emit("result",result,namespace='/test',to=sid)
+    socketio.emit("result",result,namespace='/test',room=sid)
 
 
 
