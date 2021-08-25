@@ -14,7 +14,6 @@ var latest_transcript = '';
 var recognizing = false;
 recognition.onresult = function(event){
     var interim_transcript = '';
-    console.log(event.results);
     for (var i = event.resultIndex; i < event.results.length ; i++){
         if (event.results[i].isFinal) {
             final_transcript +=  event.results[i][0].transcript;
