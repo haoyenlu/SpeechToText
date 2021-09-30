@@ -10,8 +10,9 @@ import eventlet
 from eventlet import tpool
 from eventlet import greenthread
 
-from SpeechClient import SpeechClientBridge
+#from SpeechClient import SpeechClientBridge
 from speechRecognition import SpeechRecognizer 
+from textprocessor import TextProcessor
 
 load_dotenv()
 
@@ -46,9 +47,9 @@ def on_sample_rate(data):
 
 @socketio.on('start_recording',namespace='/test')
 def on_start_recording():
-    recognizer[request.sid] = SpeechRecognizer(_result_handler,request.sid)
+    recognizer[request.sid] = SpeechRecognizer(request.sid)
     #thread = eventlet.spawn(tpool.execute,recognizer[request.sid].recognize)
-    emit('reply','start recording')
+    emit('reply','recognizer created')
 
 @socketio.on('micBinaryStream',namespace='/test')
 def on_micBinaryStream(data):
@@ -65,32 +66,22 @@ def on_stop_recording():
 @socketio.on('transcript',namespace='/test')
 def on_transcript(data):
     alignment , final_result = recognizer[request.sid].final_result(data["transcript"],data["threshold"])
+    final_result = TextProcessor.add_punctuation(final_result)
     jsonify_result = ({'alignment':alignment,'final_result':final_result,'origin_result':data["transcript"]})
     emit('final_result',jsonify_result)
 
+@socketio.on('ace_parsing',namespace='/test')
+def on_ace_parsing(data): # data should be a sentence and some argument of APE
+    emit('ace_result',TextProcessor.ace_parsing(data["sentence"],*data["options"]))
 
-def _response_handler(sid,response): 
-    if not response.results:
-        return 
+@socketio.on('write_to_file',namespace='/test')
+def on_write_to_file(data):
+    print("pass")
 
-    result = response.results[0]
-    if not result.alternatives:
-        return
-    
-    if result.is_final:
-        recognizer[sid].slice_buffer()
 
-    transcription = result.alternatives[0].transcript
-    print(transcription,flush=True)
-    jsonify_result = ({'transcription':result.alternatives[0].transcript,'is_final':result.is_final})
-    socketio.emit("transcription",jsonify_result,namespace='/test',room=sid)
-
-def _result_handler(sid,result):
-    print(result)
-    socketio.emit("result",result,namespace='/test',room=sid)
 
 
 
     
 if __name__ == '__main__':
-    socketio.run(app,debug=True)
+    socketio.run(app,debug=True,port=8000)

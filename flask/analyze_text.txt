@@ -1,0 +1,37 @@
+WP   VBZ  NN   .    
+IN   NNP  VBZ  NN   RB   NNP  VBZ  NN   .    
+NNP  VBZ  NN   CC   NNP  VBZ  RB   VB   NN   .    
+IN   JJS  CD   NN   VBZ  NN   .    
+NNP  VBZ  RB   NNP  .    
+DT   NN   VBZ  NNP  CC   VBZ  NNP  CC   VBZ  NNP  .    
+IN   JJS  CD   NN   VBZ  DT   NN   .    
+IN   NNP  VBZ  DT   NN   RB   NNP  VBZ  DT   NN   .    
+NNP  VBZ  RB   VB   DT   NN   .    
+NNP  VBZ  RB   NNP  CC   NNP  VBZ  RB   NNP  .    
+WP   VBZ  DT   NN   .    
+DT   NN   VBZ  RB   CD   NN   .    
+DT   NN   VBZ  VBN  IN   RB   CD   NN   .    
+NNP  VBZ  NN   CC   NNP  NNS  VBP  .    
+DT   NN   VBZ  NN   WDT  VBZ  NN   CC   DT   VBZ  JJ   CC   DT   VBZ  NN   .    
+NN   WDT  VBZ  NN   CC   DT   VBZ  JJ   CC   DT   VBZ  NN   VBZ  DT   NN   .    
+DT   NN   VBZ  NN   WDT  VBZ  NNP  CC   DT   VBZ  NNP  CC   DT   VBZ  NNP  .    
+NN   WDT  VBZ  NNP  CC   DT   VBZ  NNP  CC   DT   VBZ  NNP  VBZ  DT   NN   .    
+NN   VBZ  RB   JJ   .    
+WP   VBZ  NNP  VB   .    
+EX   VBZ  DT   NN   WDT  VBZ  CD   NNS  .    
+DT   NN   VBZ  IN   JJS  CD   NN   CC   VBZ  VBN  IN   IN   JJS  CD   NN   .    
+DT   NN   VBZ  NN   WDT  VBZ  NNP  CC   DT   VBZ  NNP  CC   DT   VBZ  NNP  CC   DT   VBZ  NNP  CC   DT   VBZ  NNP  .    
+NN   WDT  VBZ  NNP  CC   DT   VBZ  NNP  CC   DT   VBZ  NNP  CC   DT   VBZ  NNP  CC   DT   VBZ  NNP  VBZ  DT   NN   .    
+NNP  VBZ  RB   DT   JJ   CC   NNP  VBZ  RB   DT   NN   .    
+NNP  VBZ  DT   NN   WDT  VBZ  NNP  .    
+IN   NNP  VBZ  VBN  IN   NNP  RB   NNP  VBZ  DT   JJ   .    
+DT   NN   VBZ  DT   NN   WDT  VBZ  DT   NN   CC   DT   VBZ  VBN  IN   DT   NN   .    
+DT   NN   VBZ  DT   NN   WDT  VBZ  DT   NN   .    
+DT   NN   VBZ  DT   NN   WDT  VBZ  VBN  IN   DT   NN   .    
+DT   NN   VBZ  NNP  CC   VBZ  NNP  CC   VBZ  NNP  CC   VBZ  NNP  CC   VBZ  NNP  .    
+NNP  VBZ  RB   NNP  CC   NNP  VBZ  RB   NNP  CC   NNP  VBZ  RB   NNP  CC   NNP  VBZ  RB   NNP  .    
+WP   VBZ  VBN  IN   NNP  .    
+WP   VBZ  DT   JJ   .    
+IN   NNP  VBZ  DT   RB   RB   NNP  VBZ  RB   VB   DT   NN   .    
+IN   NNP  VBZ  RB   VB   DT   NN   RB   NNP  VBZ  DT   NN   .    
+IN   NNP  VBZ  RB   VB   DT   NN   RB   NNP  VBZ  DT   NN   CC   NN   VBZ  DT   NN   .      

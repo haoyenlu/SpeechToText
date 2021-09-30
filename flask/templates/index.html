@@ -2,22 +2,8 @@
 
 {% block title %}Speech to text{% endblock %}
 
-{% block stylesheet %}
-#result {
-    font-size: 14px;
-    font-weight: bold;
-    border: 2px solid #ddd;
-    padding: 15px;
-    text-align: left;
-    min-height: 150px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-#threshold {
-    font-size : 10px;
-    height : 15px;
-    width : 30px;
-}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %}
 
 
@@ -26,12 +12,38 @@
     <h1 class="display-5">Speech To Text</h1>
     <button id="recordBtn" class="btn btn-primary">Record</button>
     <button id="stopBtn" class="btn btn-primary" disabled>Stop</button>
+    <p>press record before you start speaking, press stop after you finish .</p>
     <div id="result">
         <span id="final_span"></span>
         <span id="interim_span"></span> 
     </div>
-    <label for="threshold">threshold:</label>
-    <input type="number" id = "threshold" min="1" max="5" value="2">
+    <button id="menu"> Menu </button>
+    <button id="show_APE"> Show APE</button>
+    <button id="show_STT>">Show STT</button>
+    <table id="option" class="table table-dark">
+        <tr>
+            <td>APE</td>
+            <td>
+                <input type="checkbox" id="syntax" name="syntax" value="-csyntaxpp">
+                <label for="syntax">Syntax</label>
+                <input type="checkbox" id="paraphrase" name="paraphrase" value="-cparaphrase">
+                <label for="paraphrase">Paraphrase</label>
+                <input type="checkbox" id="drs" name=drs" value="-cdrs">
+                <label for="drs">DRS</label>
+                <input type="checkbox" id="drsxml" name="drsxml" value="-cdrsxml">
+                <label for="drsxml">DRSXML</label>
+            </td>
+        </tr>
+        <tr>
+            <td>alignment</td>
+            <td>
+                <input type="number" id = "threshold" min="1" max="5" value="2">
+                <label for="threshold">Threshold</label>
+            </td>
+        </tr>
+    </table>
+    <div id="ace_result"></div>
+    <hr>
     <div id="response"></div>
 </div>
 <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>

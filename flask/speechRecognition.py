@@ -5,20 +5,19 @@ import queue
 import io
 
 import speech_recognition as sr 
-import TextProcessor as tp
 from API_keys import *
 
 r = sr.Recognizer()
 
+
 class SpeechRecognizer:
-    def __init__(self,result_handler,sid):
+    def __init__(self,sid):
         self._buffer = []
         self._audio_queue = queue.Queue()
         self._ended = False
         self._sample_rate = 16000
         self._sample_width = 2
         self._sid = sid
-        self._result_handler = result_handler
         self._result_queue = queue.Queue()
 
     def add_stream(self,audio_stream):
@@ -93,7 +92,7 @@ class SpeechRecognizer:
         S += transcript
         results = self._result_queue.get(block=True)
         for key, value in results.items():
-            if "could not understand audio" and "Could not request results" not in value: 
+            if "not" not in value: 
                 S += value
         
         p = give_param('james') # two options wayne or james
@@ -108,11 +107,7 @@ class SpeechRecognizer:
         except:
             alignment = "No alignment"
             final_result = None
-        
-        if final_result is not None:
-            try:
-                final_result = tp.add_punctuation(final_result)
-        
+
         return alignment , final_result
 
 
@@ -121,7 +116,6 @@ class SpeechRecognizer:
         while not self._ended or not self._audio_queue.empty():
             while not self._audio_queue.empty():
                 results = self.recognize_sentence()
-                self._result_handler(self._sid,results)
 
 
                 
