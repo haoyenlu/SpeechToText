@@ -112,6 +112,8 @@ class SpeechRecognizer:
         if final_result is not None:
             try:
                 final_result = tp.add_punctuation(final_result)
+            except:
+                print("Text Processor not working.")
         
         return alignment , final_result
 
