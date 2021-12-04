@@ -1,6 +1,6 @@
 # speechtotext
 run web server 
 ```
-./web_server.sh
+./flask/web_server.sh
 ```
 
