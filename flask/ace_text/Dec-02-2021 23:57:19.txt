@@ -1,0 +1,1 @@
+* Puzzle */ If Carlo likes basketball then Alex likes basketball.  Bob likes basketball or Alex doesn' t like basketball.  If Bob likes basketball then Carlo likes basketball.  Alex is not Bob. Alex is not Carlo. Bob is not Carlo.  At least one person likes basketball.  /* Background */  Every person is Alex or is Bob or is Carlo.  /* Question */ Who likes basketball?

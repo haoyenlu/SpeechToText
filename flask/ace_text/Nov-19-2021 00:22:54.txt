@@ -1,0 +1,7 @@
+If X has a elder_brother then X doesn't have a younger_brother.
+If X doesn't have a elder_brother then X has a younger_sister.
+ If X doesn't have a elder_sister then X has a younger_brother or X has a younger_sister.
+Alex has a younger_brother.
+Bob doesn't have a younger_sister.
+Carl has a younger_sister.
+Who has a younger_sister?

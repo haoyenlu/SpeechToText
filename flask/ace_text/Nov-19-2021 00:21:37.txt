@@ -1,0 +1,24 @@
+Every person follows at most 1 person and is followed by at most 1 person.
+There is a row that contains 5 persons.
+Every person is something that is Alex or that is Bob or that is Carl or that is David or that is Eric. Everything that is Alex or that is Bob or that is Carl or that is David or that is Eric is a person.
+David is not a last-person and David is not a first-person.
+Alex follows a person that follows David.
+If Bob is followed by Alex then Eric is a first-person.
+Carl is not a second-person.
+Eric is a fourth-person.
+Every first-person is a person that follows no person and that is followed by a person.
+Every last-person is a person that follows a person and that is followed by no person.
+Every second-person is a person that follows a first-person.
+Every third-person is a person that follows a second-person.
+Every fourth-person is a person that is followed by a last-person.
+Person1 is a first-person.
+Person2 is a second-person.
+Person3 is a third-person.
+Person4 is a fourth-person.
+Person5 is a last-person.
+Every person is Person1 or is Person2 or is Person3 or is Person4 or is Person5.
+ Alex is not Bob and Alex is not Carl and Alex is not David and Alex is not Eric.
+Bob is not David and Bob is not Carl and Bob is not Eric.
+David is not Carl and David is not Eric.
+Carl is not Eric.
+Who is a first-person?

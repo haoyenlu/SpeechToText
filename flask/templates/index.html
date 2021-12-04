@@ -2,37 +2,70 @@
 
 {% block title %}Speech to text{% endblock %}
 
-{% block stylesheet %}
-#result {
-    font-size: 14px;
-    font-weight: bold;
-    border: 2px solid #ddd;
-    padding: 15px;
-    text-align: left;
-    min-height: 150px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-#threshold {
-    font-size : 10px;
-    height : 15px;
-    width : 30px;
-}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %}
 
 
 {% block content %}
 <div class="container">
-    <h1 class="display-5">Speech To Text</h1>
-    <button id="recordBtn" class="btn btn-primary">Record</button>
-    <button id="stopBtn" class="btn btn-primary" disabled>Stop</button>
-    <div id="result">
-        <span id="final_span"></span>
-        <span id="interim_span"></span> 
+    <a href="/puzzle">puzzle</a>
+    <button id="window_but" class="btn" data-toggle="collapse" data-target="#window">Robot</button>
+    <button id="setting_but" class="btn" data-toggle="collapse" data-target="#setting">setting</button>
+    <table id="setting" class="table table-dark collapse out">
+        <tr>
+            <td>APE</td>
+            <td>
+                <label for="syntax">Syntax</label>
+                <input type="checkbox" id="syntax" name="syntax" value="-csyntaxpp">
+                <label for="paraphrase">Paraphrase</label>
+                <input type="checkbox" id="paraphrase" name="paraphrase" value="-cparaphrase">
+                <label for="drs">DRS</label>
+                <input type="checkbox" id="drs" name=drs" value="-cdrs">
+                <label for="drsxml">DRSXML</label>
+                <input type="checkbox" id="drsxml" name="drsxml" value="-cdrsxml">
+            </td>
+        </tr>
+        <tr>
+            <td>alignment</td>
+            <td>
+                <input type="number" id = "threshold" min="1" max="5" value="2">
+                <label for="threshold">Threshold</label>
+            </td>
+            <tr>
+                <td>TTP</td>
+                <td>
+                    <select id="voicegender">
+                        <option value="male1">Male1</option>
+                        <option value="male2">Male2</option>
+                        <option value="female1">Female1</option>
+                        <option value="female2">Female2</option>
+                        <option value="robot">Robot</option>
+                    </select>
+                    <label for="auto-play">Auto Play</label>
+                    <input type="checkbox" id="auto-play" name="auto-play" checked="True">
+                </td>
+            </tr>
+    </table>
+
+    <div class="window collapse in" id="window">
+        <div class="top_menu">
+            <div class="display-5 title">Puzzle Robot</div>
+            <button id="recordBtn" class="btn btn-primary">Record</button>
+            <button id="stopBtn" class="btn btn-primary" disabled>Stop</button>
+            <p>press record before you start speaking, press stop after you finish.</p>
+        </div>
+    
+        <div id="chat_box"></div>
+        <input id="input_text" type="text">
+    
+        <button id="reasoning">Reasoning</button>
     </div>
-    <label for="threshold">threshold:</label>
-    <input type="number" id = "threshold" min="1" max="5" value="2">
+
+    <div id="ace_result"></div>
+    <hr>
     <div id="response"></div>
+    <div id="tts_result"></div>
 </div>
 <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>

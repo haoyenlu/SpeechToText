@@ -1,0 +1,669 @@
+{% extends 'base.html' %}
+
+{% block title %}Puzzle{% endblock %}
+
+{% block style%}
+<style>
+.flex-container{
+    display: flexbox;
+}
+.puzzle {
+    border: 1px solid;
+    margin: 10px;
+    padding: 2px;
+}
+.puzzle > p{
+    white-space: pre-line;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<a href="/">Home</a>
+<div class="flex-container">
+    <div class="puzzle">
+        <h4 style="color: chocolate;">Puzzle 1</h4>
+        <p>
+            /* Puzzle */
+            If Carlo likes basketball then Alex likes basketball.
+            
+            Bob likes basketball or Alex doesn' t like basketball.
+            
+            If Bob likes basketball then Carlo likes basketball.
+            
+            Alex is not Bob. Alex is not Carlo. Bob is not Carlo.
+            
+            At least one person likes basketball.
+            
+            /* Background */
+            
+            Every person is Alex or is Bob or is Carlo.
+            
+            /* Question */
+            Who likes basketball?
+        </p>
+    </div>
+    
+    <div class="puzzle">
+        <h4>Puzzle 2</h4>
+        <p>
+            /* Puzzle */
+            At least one man commits a crime.
+            
+            If X commits a crime then X drives a car.
+            
+            If Alex commits a crime then Bob commits a crime.
+            
+            Carl doesn't drive a car.
+            
+            /* Background */
+            
+            Every man is Alex or is Bob or is Carl.
+            
+            Alex is not Bob and Alex is not Carl.
+            
+            Bob is not Carl.
+            
+            
+            /* Question */
+            
+            Who commits a crime?
+        </p>
+    </div>
+    
+    <div class="puzzle">
+        <h4>Puzzle 3</h4>
+        <p>
+            /* Puzzle */
+            If X has a elder_brother then X doesn't have a younger_brother.
+
+            If X doesn't have a elder_brother then X has a younger_sister.
+
+            If X doesn't have a elder_sister then X has a younger_brother or X has a younger_sister.
+
+            Alex has a younger_brother.
+
+            Bob doesn't have a younger_sister.
+
+            Carl has a younger_sister.
+
+            /* Question */
+
+            Who has a younger_sister?
+
+            Who has a elder_brother?
+
+            Who has a elder_sister?
+
+            Who has a younger_brother?
+        </p>
+    </div>
+
+    <div class="puzzle">
+        <h4>Puzzle 4</h4>
+        <p>
+            /* Puzzle */
+            Every n: Y is a n: X.
+
+            Every n: Z is a n: Y.
+
+            Every n: P is a n: X.
+
+            No n: Y is a n: P.
+
+            No n: Q is a n: X.
+
+            Winner is a n: Y and Winner is not a n: Z.
+
+            There is exactly 1 person that is Winner.
+
+            Every person is Alex or is Bob or is Carl.
+
+            If Carl is a n: Q then Bob is not a n: Z.
+
+            If Alex is a n: X then Bob is a n: Y.
+
+            Bob is not a n: X.
+
+            Alex is a n: Q. or Alex is a n: X.
+
+            Carl is not a n: P.
+
+            /* Background */
+            Winner is a person.
+
+            Alex is not Bob and Alex is not Carl.
+
+            Bob is not Carl.
+
+            /* Question */
+            Who is Winner?
+        </p>
+    </div>
+
+    <div class="puzzle">
+        <h4>Puzzle 5</h4>
+        <p>
+            /* Puzzle */
+            Every person likes exactly 1 sport.
+
+            Every sport is liked by exactly 1 person.
+
+            Alex likes p: baseball or Alex likes p: badminton.
+
+            Bob doesn't like p: football.
+
+            Carl doesn't like p: tennis.
+
+            p: baseball is liked by Carl or p: baseball is liked by David.
+
+            David likes p: baseball or David likes p: tennis.
+
+            /* Background */
+            Every sport is something that is p: baseball or that is p: football or that is p: badminton or that is p: tennis. Everything that is p: baseball or that is p: football or that is p: badminton or that is p: tennis is a sport.
+
+            Every person is something that is Alex or that is Bob or that is something that is Carl or that is David. Everything that is Alex or that is Bob or that is something that is Carl or that is David is a person.
+
+            p: football is not p: baseball. p: football is not p: badminton. p: football is not p: tennis.
+
+            p: baseball is not p: badminton. p: baseball is not p: tennis.
+
+            p: badminton is not p: tennis.
+
+            Alex is not Bob and Alex is not Carl and Alex is not David.
+
+            Bob is not David and Bob is not Carl.
+
+            David is not Carl.
+
+            /* Question */
+            Who likes p: football?
+
+            Who likes p: baseball?
+
+            Who likes p: badminton?
+
+            Who likes p: tennis?
+        </p>
+    </div>
+
+    <div class="puzzle">
+        <h4>Puzzle 6</h4>
+        <p>   
+            /* Puzzle */
+            Every man loves exactly 1 woman.
+
+            Every woman loves exactly 1 man.
+
+            Every man is loved by exactly 1 woman.
+
+            Every woman is loved by exactly 1 man.
+
+            Bob loves a woman that does not love David.
+
+            David does not love Dolly.
+
+            Dolly loves a man that loves a woman that loves Alex.
+
+            Amy is loved by a man that is loved by Beth.
+
+            Alex does not love Dolly.
+
+            Cindy loves a man that loves a woman that loves Carl.
+
+            /* Background */
+            Every man is something that is Alex or that is Bob or that is Carl or that is David. Everything that is Alex or that is Bob or that is Carl or that is David is a man.
+
+            Every woman is something that is Amy or that is Beth or that is Cindy or that is Dolly. Everything that is Amy or that is Beth or that is Cindy or that is Dolly is a woman.
+
+            Amy is a woman.
+
+            Beth is a woman.
+
+            Alex is a man.
+
+            David is a man.
+
+            Dolly is a woman.
+
+            Cindy is a woman.
+
+            Carl is a man.
+
+            Bob is a man.
+
+            Alex is not Bob.
+
+            Alex is not Carl.
+
+            Alex is not David.
+
+            Bob is not David.
+
+            Bob is not Carl.
+
+            David is not Carl.
+
+            Amy is not Beth.
+
+            Amy is not Cindy.
+
+            Amy is not Dolly.
+
+            Beth is not Dolly.
+
+            Cindy is not Dolly.
+
+            Cindy is not Beth.
+
+            No man is a woman.
+
+            /* Question */
+            Who does Alex love?
+
+            Who does Bob love?
+
+            Who does Carl love?
+
+            Who does David love?
+
+            Who does Amy love?
+
+            Who does Beth love?
+
+            Who does Cindy love?
+
+            Who does Dolly love?
+        </p>
+    </div>
+
+    <div class="puzzle">
+        <h4>follow</h4>
+        <p>
+            /* Puzzle */
+            There is a row that contains 5 persons.
+
+            Every person follows at most 1 person and is followed by at most 1 person.
+
+            Every person is something that is Alex or that is Bob or that is Carl or that is David or that is Eric. Everything that is Alex or that is Bob or that is Carl or that is David or that is Eric is a person.
+
+            David is not a last-person and David is not a first-person.
+
+            Alex follows a person that follows David.
+
+            If Bob is followed by Alex then Eric is a first-person.
+
+            Carl is not a second-person.
+
+            Eric is a fourth-person.
+
+            /* Background */
+            Every first-person is a person that follows no person and that is followed by a person.
+
+            Every last-person is a person that follows a person and that is followed by no person.
+
+            Every second-person is a person that follows a first-person.
+
+            Every third-person is a person that follows a second-person.
+
+            Every fourth-person is a person that is followed by a last-person.
+
+            Person1 is a first-person.
+
+            Person2 is a second-person.
+
+            Person3 is a third-person.
+
+            Person4 is a fourth-person.
+
+            Person5 is a last-person.
+
+            Every person is Person1 or is Person2 or is Person3 or is Person4 or is Person5.
+
+            Alex is not Bob and Alex is not Carl and Alex is not David and Alex is not Eric.
+
+            Bob is not David and Bob is not Carl and Bob is not Eric.
+
+            David is not Carl and David is not Eric.
+
+            Carl is not Eric.
+
+            /* Question */
+
+            Who is followed by Carl?
+
+            Who is a first-person?
+
+            Who is a second-person?
+
+            Who is a third-person?
+
+            Who is a fourth-person?
+
+            Who is a last-person?
+        </p>
+    </div>
+
+    <div class="puzzle">
+        <h4>loner</h4>
+        <p>
+            /* Puzzle */
+            Every loner is a man that doesn' t have p: fun. Every man that doesn' t have p: fun is a loner.
+
+            Every man is something that is Alex or that is Bob or that is Carl or that is David or that is Eric. Everything that is Alex or that is Bob or that is Carl or that is David or that is Eric is a man.
+
+            Everyone is a man of p: freedom or is a man of p: happiness or is a man of p: power.
+
+            Exactly 4 men have p: fun.
+
+            Exactly 1 man is a man of p: freedom.
+
+            If Carl is not a man of p: power then Alex is a man of p: freedom.
+
+            If X is a man of p: freedom then X has p: fun.
+
+            Every man that owns a cat is a man of p: happiness. Every man that is a man of p: happiness owns a cat.
+
+            No man that owns a dog owns a cat.
+
+            Bob owns a dog.
+
+            If Alex doesn't have p: fun then Carl is a man of p: freedom.
+
+            If Bob is a man of p: power then Carl is a man of p: happiness.
+
+            David owns a cat.
+
+            Eric is a man of p: happiness.
+
+            If Bob has p: fun then David isn' t a man of p: happiness.
+
+            Bob is a man of p: freedom or Bob is a man of p: power.
+
+            /* Background */
+            Every man of p: freedom is not a man of p: power.
+
+            Every man of p: freedom is not a man of p: happiness.
+
+            Every man of p: happiness is not a man of p: power.
+
+            Alex is not Bob and Alex is not Carl and Alex is not David and Alex is not Eric.
+
+            Bob is not David and Bob is not Carl and Bob is not Eric.
+
+            David is not Carl and David is not Eric.
+
+            Carl is not Eric.
+
+            /* Question */
+            Who is a loner?
+            /* Bob */
+
+            Who is a man of p: freedom?
+            /* Alex */
+
+            Who owns a cat?
+            /* Carl David Eric */
+        </p>
+    </div>
+
+    <div class="puzzle">
+        <h4>eat fruit</h4>
+        <p>
+            /* Puzzle */
+            Every person eats exactly 1 fruit.
+
+            Every fruit is eaten by exactly 1 person.
+
+            Bob eats banana.
+
+            Carlo eats apple or Carlo eats melon.
+
+            Alex does not eat apple.
+
+            /* Background */
+            Every fruit is something that is apple or that is banana or that is melon. Everything that is apple or that is banana or that is melon is a fruit.
+
+            Every person is something that is Alex or that is Bob or that is Carlo. Everything that is Alex or that is Bob or that is Carlo is a person.
+
+            apple is a fruit.
+
+            melon is a fruit.
+
+            banana is a fruit.
+
+            Alex is a person.
+
+            Bob is a person.
+
+            Carlo is a person.
+
+            Alex is not Bob. Alex is not Carlo.
+
+            Bob is not Carlo.
+
+            apple is not banana. apple is not melon.
+
+            banana is not melon.
+
+            /* Question */
+            What does Alex eat?
+
+            What does Bob eat?
+
+            What does Carlo eat?
+
+            Who eats melon?
+
+            Who eats banana?
+
+            Who eats apple?
+        </p>
+    </div>
+
+    <div class="puzzle">
+        <h4>family tree</h4>
+        <p>
+            /* Puzzle */
+            Every person is something that is Alex or that is Bob or that is Carl or that is David or that is Eric. Everything that is Alex or that is Bob or that is Carl or that is David or that is Eric is a person.
+
+            Alex is a grandfather of Carl.
+
+            Carl is a daughter of Bob.
+
+            Eric is a son of Alex.
+
+            David is a mother of Carl.
+
+            Bob is a brother of Eric.
+
+            /* Background */
+            Every man is a person.
+
+            Every woman is a person.
+
+            Every person is a man or is a woman.
+
+            No man is a woman.
+
+            Every father is a man.
+
+            Every brother is a man.
+
+            Every son is a man.
+
+            Every mother is a woman.
+
+            Every sister is a woman.
+
+            Every daughter is a woman.
+
+            Every grandfather is a father that is a father of a father or that is a father of a mother. Every father that is a father of a father or that is a father of a mother is a grandfather.
+
+            Every grandmother is a mother that is a mother of a mother or that is a mother of a father. Every mother that is a mother of a mother or that is a mother of a father is a grandmother.
+
+            Every grandson is a son that is a son of a son or that is a son of a daughter. Every son that is a son of a son or that is a son of a daughter is a grandson.
+
+            Every granddaughter is a daughter that is a daughter of a son or that is a daughter of a daughter. Every daughter that is a daughter of a son or that is a daughter of a daughter is a granddaughter.
+
+            Every uncle is a brother that is a brother of a father or that is a brother of a mother. Every brother that is a brother of a father or that is a brother of a mother is an uncle.
+
+            Every aunt is a sister that is a sister of a father or that is a sister of a mother. Every sister that is a sister of a father or that is a sister of a mother is an aunt.
+
+            Every nephew is a son that is a son of a brother or that is a son of a sister. Every son that is a son of a brother or that is a son of a sister is a nephew.
+
+            Every niece is a daughter that is a daughter of a brother or that is a daughter of a sister. Every daughter that is a daughter of a brother or that is a daughter of a sister is a niece.
+
+            If X is a father of Y and Y is a man then Y is a son of X. If X is a father of Y and Y is a woman then Y is a daughter of X.
+
+            If X is a mother of Y and Y is a man then Y is a son of X. If X is a mother of Y and Y is a woman then Y is a daughter of X.
+
+            If X is a son of Y and Y is a man then Y is a father of X. If X is a son of Y and Y is a woman then Y is a mother of X.
+
+            If X is a daughter of Y and Y is a man then Y is a father of X. If X is a daughter of Y and Y is a woman then Y is a mother of X.
+
+            If X is a grandfather of Y and Y is a man then Y is a grandson of X. If X is a grandfather of Y and Y is a woman then Y is a granddaughter of X.
+
+            If X is a grandmother of Y and Y is a man then Y is a grandson of X. If X is a grandmother of Y and Y is a woman then Y is a granddaughter of X.
+
+            If X is a grandson of Y and Y is a man then Y is a grandfather of X. If X is a grandson of Y and Y is a woman then Y is a grandmother of X.
+
+            If X is a granddaughter of Y and Y is a man then Y is a grandfather of X. If X is a granddaughter of Y and Y is a woman then Y is a grandmother of X.
+
+            If X is a brother of Y and Y is a man then Y is a brother of X. If X is a brother of Y and Y is a woman then Y is a sister of X.
+
+            If X is a sister of Y and Y is a man then Y is a brother of X. If X is a sister of Y and Y is a woman then Y is a sister of X.
+
+            If X is an uncle of Y and Y is a man then Y is a nephew of X. If X is an uncle of Y and Y is a woman then Y is a niece of X.
+
+            If X is an aunt of Y and Y is a man then Y is a nephew of X. If X is an aunt of Y and Y is a woman then Y is a niece of X.
+
+            If X is a nephew of Y and Y is a man then Y is an uncle of X. If X is a nephew of Y and Y is a woman then Y is an aunt of X.
+
+            If X is a niece of Y and Y is a man then Y is an uncle of X. If X is a niece of Y and Y is a woman then Y is an aunt of X.
+
+            If X is a son of Y and Y is a son of Z and Z is a man then Z is a grandfather of X. If X is a daughter of Y and Y is a son of Z and Z is a man then Z is a grandfather of X. If X is a son of Y and Y is a daughter of Z and Z is a man then Z is a grandfather of X. If X is a daughter of Y and Y is a daughter of Z and Z is a man then Z is a grandfather of X.
+
+            If X is a son of Y and Y is a son of Z and Z is a woman then Z is a grandmother of X. If X is a daughter of Y and Y is a son of Z and Z is a woman then Z is a grandmother of X. If X is a son of Y and Y is a daughter of Z and Z is a woman then Z is a grandmother of X. If X is a daughter of Y and Y is a daughter of Z and Z is a woman then Z is a grandmother of X.
+
+            If X is a father of Y and Y is a father of Z and Z is a man then Z is a grandson of X. If X is a mother of Y and Y is a father of Z and Z is a man then Z is a grandson of X. If X is a father of Y and Y is a mother of Z and Z is a man then Z is a grandson of X. If X is a mother of Y and Y is a mother of Z and Z is a man then Z is a grandson of X.
+
+            If X is a father of Y and Y is a father of Z and Z is a woman then Z is a granddaughter of X. If X is a mother of Y and Y is a father of Z and Z is a woman then Z is a granddaughter of X. If X is a father of Y and Y is a mother of Z and Z is a woman then Z is a granddaughter of X. If X is a mother of Y and Y is a mother of Z and Z is a woman then Z is a granddaughter of X.
+
+            If X is a son of Y and Y is a brother of Z and Z is a man then Z is an uncle of X. If X is a daughter of Y and Y is a brother of Z and Z is a man then Z is an uncle of X. If X is a son of Y and Y is a sister of Z and Z is a man then Z is an uncle of X. If X is a daughter of Y and Y is a sister of Z and Z is a man then Z is an uncle of X.
+
+            If X is a son of Y and Y is a brother of Z and Z is a woman then Z is an aunt of X. If X is a daughter of Y and Y is a brother of Z and Z is a woman then Z is an aunt of X. If X is a son of Y and Y is a sister of Z and Z is a woman then Z is an aunt of X. If X is a daughter of Y and Y is a sister of Z and Z is a woman then Z is an aunt of X.
+
+            If X is a brother of Y and Y is a father of Z and Z is a man then Z is a nephew of X. If X is a sister of Y and Y is a father of Z and Z is a man then Z is a nephew of X. If X is a brother of Y and Y is a mother of Z and Z is a man then Z is a nephew of X. If X is a sister of Y and Y is a mother of Z and Z is a man then Z is a nephew of X. 
+
+            If X is a brother of Y and Y is a father of Z and Z is a woman then Z is a niece of X. If X is a sister of Y and Y is a father of Z and Z is a woman then Z is a niece of X. If X is a brother of Y and Y is a mother of Z and Z is a woman then Z is a niece of X. If X is a sister of Y and Y is a mother of Z and Z is a woman then Z is a niece of X. 
+
+            If X is a son of Z and Y is a son of Z then X is a brother of Y. If X is a son of Z and Y is a daughter of Z then X is a brother of Y.
+
+            If X is a daughter of Z and Y is a son of Z then X is a sister of Y. If X is a daughter of Z and Y is a daughter of Z then X is a sister of Y.
+
+            If X is a father of Z and Y is a mother of Z then X marries Y. 
+
+            If X marries Y then Y marries X.
+
+            Every father is a father of a person. Everyone that is a father of a person is a father.
+
+            Every mother is a mother of a person. Everyone that is a mother of a person is a mother.
+
+            Every son is a son of a person. Everyone that is a son of a person is a son.
+
+            Every daughter is a daughter of a person. Everyone that is a daughter of a person is a daughter.
+
+            Every brother is a brother of a person. Everyone that is a brother of a person is a brother.
+
+            Every sister is a sister of a person. Everyone that is a sister of a person is a sister.
+
+            Every grandfather is a grandfather of a person. Everyone that is a grandfather of a person is a grandfather. 
+
+            Every grandmother is a grandmother of a person. Everyone that is a grandmother of a person is a grandmother. 
+
+            Every grandson is a grandson of a person. Everyone that is a grandson of a person is a grandson. 
+
+            Every granddaughter is a granddaughter of a person. Everyone that is a granddaughter of a person is a granddaughter. 
+
+            Every uncle is an uncle of a person. Everyone that is an uncle of a person is an uncle. 
+
+            Every aunt is an aunt of a person. Everyone that is an aunt of a person is an aunt. 
+
+            Every nephew is a nephew of a person. Everyone that is a nephew of a person is a nephew. 
+
+            Every niece is a niece of a person. Everyone that is a niece of a person is a niece. 
+
+            Alex is not Bob and Alex is not Carl and Alex is not David and Alex is not Eric.
+
+            Bob is not David and Bob is not Carl and Bob is not Eric.
+
+            David is not Carl and David is not Eric.
+
+            Carl is not Eric.
+
+
+            /* Question */
+            Who is a uncle of a daughter of David?
+
+            Who marries a father of Carl?
+        </p>
+    </div>
+
+    <div class="puzzle">
+        <h4>day</h4>
+        <p>
+            /* Puzzle */
+
+            Yesterday is not Saturday and Yesterday is not Thursday.
+
+            Today is not Monday and Today is not Tuesday.
+
+            Tomorrow is not Thursday and Tomorrow is not Friday.
+
+            /* Background */
+
+            Every day follows exactly 1 day and is followed by exactly 1 day.
+
+            Sunday follows Saturday and Sunday is followed by Monday.
+
+            Monday follows Sunday and Monday is followed by Tuesday.
+
+            Tuesday follows Monday and Tuesday is followed by Wednesday.
+
+            Wednesday follows Tuesday and Wednesday is followed by Thursday.
+
+            Thursday follows Wednesday and Thursday is followed by Friday.
+
+            Friday follows Thursday and Friday is followed by Saturday.
+
+            Saturday follows Friday and Saturday is followed by Sunday.
+
+            Today is a day.
+
+            Today is not Yesterday. Today is not Tomorrow.
+
+            Yesterday is not Tomorrow.
+
+            Saturday is not Sunday and Saturday is not Monday and Saturday is not Tuesday and Saturday is not Wednesday and Saturday is not Thursday and Saturday is not Friday. Friday is not Sunday and Friday is not Monday and Friday is not Tuesday and Friday is not Wednesday and Friday is not Thursday. Sunday is not Monday and Sunday is not Tuesday and Sunday is not Wednesday and Sunday is not Thursday. Monday is not Wednesday and Monday is not Tuesday and Monday is not Thursday. Wednesday is not Tuesday and Wednesday is not Thursday. Tuesday is not Thursday.
+
+            Every day is something that is Friday or that is Monday or that is Saturday or that is Sunday or that is Tuesday or that is Thursday or that is Wednesday. Everything that is Friday or that is Monday or that is Saturday or that is Sunday or that is Tuesday or that is Thursday or that is Wednesday is a day.
+
+            Yesterday is a day.
+
+            Tomorrow is a day.
+
+            Today follows Yesterday.
+
+            Tomorrow follows Today.
+
+            /* Question */
+
+            Which day is the day that follows the day that follows Tomorrow?
+        </p>
+    </div>
+</div>
+
+
+{% endblock %}

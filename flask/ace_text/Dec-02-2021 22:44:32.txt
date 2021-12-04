@@ -1,0 +1,4 @@
+Bob and Alice are person.
+A person commits the crime.
+Alice does not commit the crime.
+Who commits the crime?

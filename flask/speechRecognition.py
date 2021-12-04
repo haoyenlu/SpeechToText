@@ -5,20 +5,21 @@ import queue
 import io
 
 import speech_recognition as sr 
-import TextProcessor as tp
 from API_keys import *
 
 r = sr.Recognizer()
 
+COULD_NOT_UNDERSTAND = "Could not understand audio"
+COULD_NOT_REQUEST = "Could not request results"
+
 class SpeechRecognizer:
-    def __init__(self,result_handler,sid):
+    def __init__(self,sid):
         self._buffer = []
         self._audio_queue = queue.Queue()
         self._ended = False
         self._sample_rate = 16000
         self._sample_width = 2
         self._sid = sid
-        self._result_handler = result_handler
         self._result_queue = queue.Queue()
 
     def add_stream(self,audio_stream):
@@ -55,33 +56,33 @@ class SpeechRecognizer:
         try:
             google_result = r.recognize_google(audio_data)
         except sr.UnknownValueError:
-            google_result = "Google Speech Recognition could not understand audio"
+            google_result = COULD_NOT_UNDERSTAND
         except sr.RequestError as e:
-            google_result = "Could not request results from Google Speech Recognition service; {0}".format(e)
+            google_result = COULD_NOT_REQUEST
             
         # recognize from IBM speech to text
         try:
             ibm_result = r.recognize_ibm(audio_data,username=IBM_USERNAME,password=IBM_PASSWORD)
         except sr.UnknownValueError:
-            ibm_result = "IBM Speech to Text could not understand audio"
+            ibm_result = COULD_NOT_UNDERSTAND
         except sr.RequestError as e:
-            ibm_result = "Could not request results from IBM Speech to Text service; {0}".format(e)
+            ibm_result = COULD_NOT_REQUEST
 
         #recognize from houndify 
         try:
             houndify_result = r.recognize_houndify(audio_data, client_id=HOUNDIFY_ID, client_key=HOUNDIFY_KEY)
         except sr.UnknownValueError:
-            houndify_result = "Houndify could not understand audio"
+            houndify_result = COULD_NOT_UNDERSTAND
         except sr.RequestError as e:
-            houndify_result = "Could not request results from Houndify service; {0}".format(e)
+            houndify_result = COULD_NOT_REQUEST
 
         #recognize from wit
         try:
             wit_result = r.recognize_wit(audio_data, key=WIT_KEY)
         except sr.UnknownValueError:
-            wit_result = "Wit could not understand audio"
+            wit_result = COULD_NOT_UNDERSTAND
         except sr.RequestError as e:
-            wit_result = "Could not request results from Wit service; {0}".format(e)
+            wit_result = COULD_NOT_REQUEST
 
         results = {"google_result":google_result,"ibm_result":ibm_result,"houndify_result":houndify_result,"wit_result":wit_result}
         self._result_queue.put(results)
@@ -93,7 +94,7 @@ class SpeechRecognizer:
         S += transcript
         results = self._result_queue.get(block=True)
         for key, value in results.items():
-            if "could not understand audio" and "Could not request results" not in value: 
+            if value != COULD_NOT_REQUEST and value != COULD_NOT_UNDERSTAND:
                 S += value
         
         p = give_param('james') # two options wayne or james
@@ -108,13 +109,6 @@ class SpeechRecognizer:
         except:
             alignment = "No alignment"
             final_result = None
-        
-        if final_result is not None:
-            try:
-                final_result = tp.add_punctuation(final_result)
-            except:
-                print("Text Processor not working.")
-        
         return alignment , final_result
 
 
@@ -123,7 +117,6 @@ class SpeechRecognizer:
         while not self._ended or not self._audio_queue.empty():
             while not self._audio_queue.empty():
                 results = self.recognize_sentence()
-                self._result_handler(self._sid,results)
 
 
                 

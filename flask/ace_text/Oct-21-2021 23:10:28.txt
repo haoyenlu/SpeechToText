@@ -1,0 +1,6 @@
+if Carlo likes basketball then Alex likes basketball.
+Bob likes basketball or Alex doesn't like basketball.
+if Bob likes basketball then Carlo likes basketball.
+at least one person likes basketball.
+every person is Alex or is Bob or is Carlo.
+who likes basketball?

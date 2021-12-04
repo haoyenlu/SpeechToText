@@ -1,0 +1,8 @@
+at least one man commits a crime.
+if Alex commit a crime then Bob commits a crime.
+Carl doesn't drive a car.
+every man is Alex or is Bob or is Carl.
+Alex is not Bob and Alex is not Carl.
+Bob is not Carl.
+if x commits a crime then X drives a car.
+who commits a crime?

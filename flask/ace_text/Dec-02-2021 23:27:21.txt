@@ -1,0 +1,9 @@
+Every n: Y is a n: X.
+Every n: Z is a n: Y.
+Every n: P is a n: X.
+No n: Y is a n: P.
+No n: Q is a n: X.  Winner is a n: Y and Winner is not a n: Z.  There is exactly 1 person that is Winner.  Every person is Alex or is Bob or is Carl.  If Carl is a n: Q then Bob is not a n: Z.  If Alex is a n: X then Bob is a n: Y.  Bob is not a n: X.  Alex is a n: Q. or Alex is a n: X.  Carl is not a n: P.
+Winner is a person.
+Alex is not Bob and Alex is not Carl.
+Bob is not Carl.
+Who is Winner?

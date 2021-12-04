@@ -1,0 +1,5 @@
+At least one man commits a crime.
+If X commits a crime then X drives a car.
+If Alex commits a crime then Bob commits a crime.
+Carl doesn't drive a car.
+Who commits a crime?

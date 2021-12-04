@@ -1,0 +1,16 @@
+Every person likes exactly 1 sport.
+Every sport is liked by exactly 1 person.
+Alex likes baseball or Alex likes badminton.
+Bob doesn't like football.
+Carl doesn't like tennis.
+baseball is liked by Carl or baseball is liked by David.
+David likes baseball or David likes tennis.
+Every sport is something that is baseball or that is football or that is badminton or that is tennis. Everything that is baseball or that is football or that is badminton or that is tennis is a sport.
+Every person is something that is Alex or that is Bob or that is something that is Carl or that is David. Everything that is Alex or that is Bob or that is something that is Carl or that is David is a person.
+football is not baseball. football is not badminton. football is not tennis.
+baseball is not badminton. baseball is not tennis.
+badminton is not tennis.
+Alex is not Bob and Alex is not Carl and Alex is not David.
+Bob is not David and Bob is not Carl.
+David is not Carl.
+Who likes football?

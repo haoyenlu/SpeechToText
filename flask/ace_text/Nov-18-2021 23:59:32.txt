@@ -1,0 +1,22 @@
+Every person eats exactly 1 fruit.  Every fruit is eaten by exactly 1 person.
+Bob eats banana.
+Carlo eats apple or Carlo eats melon.  Alex does not eat apple.
+Every fruit is something that is apple or that is banana or that is melon. Everything that is apple or that is banana or that is melon is a fruit.
+Every person is something that is Alex or that is Bob or that is Carlo. Everything that is Alex or that is Bob or that is Carlo is a person.
+apple is a fruit.  melon is a fruit.  banana is a fruit.
+Alex is a person.  Bob is a person.  Carlo is a person.
+Alex is not Bob. Alex is not Carlo.  Bob is not Carlo.
+apple is not banana. apple is not melon.  banana is not melon.
+What does Alex eat?
+Alex eats melon .
+
+What does Bob eat?
+Bob eats banana .
+
+What does Carlo eat?
+Carlo eats apple .
+
+Who eats melon?
+Alex eats melon .
+
+Who eats banana?
