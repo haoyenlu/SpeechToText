@@ -1,69 +1,102 @@
 {% extends 'base.html' %}
 
-{% block title %}Speech to text{% endblock %}
+{% block title %}Puzzle Robot{% endblock %}
 
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %}
 
+{% block modal %}
+<div id="setting" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3 class="modal-title">Settings</h3>
+                  </div>
+                <div class="modal-body">
+                    <table  class="table table-dark">
+                        <tr>
+                            <td class="field">APE</td>
+                            <td>
+                                <label for="syntax">Syntax</label>
+                                <input type="checkbox" id="syntax" name="syntax" value="-csyntaxpp">
+                                <label for="paraphrase">Paraphrase</label>
+                                <input type="checkbox" id="paraphrase" name="paraphrase" value="-cparaphrase">
+                                <label for="drs">DRS</label>
+                                <input type="checkbox" id="drs" name="drs" value="-cdrs">
+                                <label for="drsxml">DRSXML</label>
+                                <input type="checkbox" id="drsxml" name="drsxml" value="-cdrsxml">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field">Alignment</td>
+                            <td>
+                                <input type="number" id = "threshold" min="1" max="5" value="2">
+                                <label for="threshold">Threshold</label>
+                            </td>
+                            <tr>
+                                <td class="field">TTP</td>
+                                <td>
+                                    <select id="voicegender">
+                                        <option value="male1">Male1</option>
+                                        <option value="male2">Male2</option>
+                                        <option value="female1">Female1</option>
+                                        <option value="female2">Female2</option>
+                                        <option value="robot">Robot</option>
+                                    </select>
+                                    <label for="auto-play">Auto Play</label>
+                                    <input type="checkbox" id="auto-play" name="auto-play" checked="True">
+                                </td>
+                            </tr>
+                </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Save changes</button>
+          </div>
+        </div>
+      </div>
+            
+        </div>
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <a href="/puzzle">puzzle</a>
-    <button id="window_but" class="btn" data-toggle="collapse" data-target="#window">Robot</button>
-    <button id="setting_but" class="btn" data-toggle="collapse" data-target="#setting">setting</button>
-    <table id="setting" class="table table-dark collapse out">
-        <tr>
-            <td>APE</td>
-            <td>
-                <label for="syntax">Syntax</label>
-                <input type="checkbox" id="syntax" name="syntax" value="-csyntaxpp">
-                <label for="paraphrase">Paraphrase</label>
-                <input type="checkbox" id="paraphrase" name="paraphrase" value="-cparaphrase">
-                <label for="drs">DRS</label>
-                <input type="checkbox" id="drs" name=drs" value="-cdrs">
-                <label for="drsxml">DRSXML</label>
-                <input type="checkbox" id="drsxml" name="drsxml" value="-cdrsxml">
-            </td>
-        </tr>
-        <tr>
-            <td>alignment</td>
-            <td>
-                <input type="number" id = "threshold" min="1" max="5" value="2">
-                <label for="threshold">Threshold</label>
-            </td>
-            <tr>
-                <td>TTP</td>
-                <td>
-                    <select id="voicegender">
-                        <option value="male1">Male1</option>
-                        <option value="male2">Male2</option>
-                        <option value="female1">Female1</option>
-                        <option value="female2">Female2</option>
-                        <option value="robot">Robot</option>
-                    </select>
-                    <label for="auto-play">Auto Play</label>
-                    <input type="checkbox" id="auto-play" name="auto-play" checked="True">
-                </td>
-            </tr>
-    </table>
-
+    <div class="container">
     <div class="window collapse in" id="window">
         <div class="top_menu">
             <div class="display-5 title">Puzzle Robot</div>
-            <button id="recordBtn" class="btn btn-primary">Record</button>
-            <button id="stopBtn" class="btn btn-primary" disabled>Stop</button>
-            <p>press record before you start speaking, press stop after you finish.</p>
         </div>
-    
+        <div class="tab-list">
+            <div class="ex-block alignLeft"> 
+                <button class="tab" id="ex1_tab">example 1</button>
+                <button class="tab" id="ex2_tab">example 2</button>
+                <button class="tab" id="ex3_tab">example 3</button>
+            </div>
+            <div class="clear-block alignRight"> 
+                <button class="tab" id="clear">Clear</button>
+            </div>
+        </div>
         <div id="chat_box"></div>
-        <input id="input_text" type="text">
-    
-        <button id="reasoning">Reasoning</button>
+        <input id="input_text" type="text" placeholder=" Press Enter to send messages">
+        <button id="recordBtn" class="btn btn-primary">
+                <i class="glyphicon glyphicon-record"></i>
+            </button>
+            <button id="stopBtn" class="btn btn-primary">
+                <i class="glyphicon glyphicon-stop"></i>
+            </button>
+        <div class="tab-list">
+            <div class="switch-button-block alignLeft"> 
+                <button class="switch-button"></button>
+            </div>
+            <div class="button-block alignRight"> 
+                <button id="setting_but" class="btn" data-toggle="modal" data-target="#setting">
+                    <i class="glyphicon glyphicon-cog"></i>
+                </button>
+                <button class="tab" id="reasoning">Reasoning</button>
+            </div>
+        </div>
     </div>
 
     <div id="ace_result"></div>
-    <hr>
     <div id="response"></div>
     <div id="tts_result"></div>
 </div>

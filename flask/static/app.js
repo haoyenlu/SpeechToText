@@ -165,9 +165,9 @@ function startRecording() {
     socket.emit('start_recording');
 
     var constraints = {audio:true,video:false};
-
-    recordBtn.disabled = true;
-    stopBtn.disabled = false;
+    
+    recordBtn.style.display = 'none';
+    stopBtn.style.display = 'inline';
 
     navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
         console.log("getUserMedia available.");
@@ -203,8 +203,8 @@ function startRecording() {
 function stopRecording() {
     console.log("stopBtn clicked");
 
-    stopBtn.disabled = true;
-    recordBtn.disabled = false;
+    recordBtn.style.display = 'inline';
+    stopBtn.style.display = 'none';
 
     recognition.stop();
 
@@ -238,7 +238,7 @@ $('#reasoning').click(function(){
 
 var input = document.getElementById("input_text");
 input.addEventListener("keyup",function(event){
-    if (event.keyCode === 13){
+    if (event.keyCode === 13 && input.value != ""){
         createChatWidget(_content = input.value,isRobot = false);
         input.value = "";
     }
@@ -255,12 +255,13 @@ function createChatWidget(_content,isRobot){
     var chat_box = $('#chat_box');
     if (isRobot){
         var box = $(document.createElement('div')).appendTo(chat_box).attr('class','box darker');
-        var avatar = $(document.createElement('img')).appendTo(box).attr('src',"./static/images/robot_avatar.png").attr('class','right');
+        var avatar = $(document.createElement('img')).appendTo(box).attr('src',"./static/images/robot.jpg").attr('class','right');
         sendToTTSApi(_content);
     }
     else {
-        var box = $(document.createElement('div')).appendTo(chat_box).attr('class','box');
-        var avatar = $(document.createElement('img')).appendTo(box).attr('src','./static/images/user_avatar.png');
+        let cls = 'box'
+        if (!isDarkMode) cls = 'box box_light';
+        var box = $(document.createElement('div')).appendTo(chat_box).attr('class', cls);
     }
     var content = $(document.createElement('p')).html(_content).attr('contenteditable','true').appendTo(box);
     var _delete = $(document.createElement('a')).html('delete').appendTo(box).attr('class','right').click(function(){box.remove();});
@@ -309,4 +310,90 @@ function sendToTTSApi(content){
 			console.log("Upload text failed!");
 	});
 
+}
+
+var puzzle = [
+                [
+                    "/* example 1 /*",
+                    "If Carlo likes basketball then Alex likes basketball.",
+                    "Bob likes basketball or Alex doesn' t like basketball.",
+                    "If Bob likes basketball then Carlo likes basketball.",
+                    "At least one person likes basketball."
+                ], 
+                [
+                    "/* example 2 /*",
+                    "Alex is a grandfather of Carl.",
+                    "Carl is a daughter of Bob.",
+                    "Eric is a son of Alex.",
+                    "David is a mother of Carl.",
+                    "Bob is a brother of Eric."
+                ],
+                [
+                    "/* example 3 /*",
+                    "Yesterday is not Saturday and Yesterday is not Thursday.",
+                    "Today is not Monday and Today is not Tuesday.",
+                    "Tomorrow is not Thursday and Tomorrow is not Friday."
+                ]
+              ];
+var question = [
+                    "Who likes basketball?",
+                    "Who is a uncle of a daughter of David?",
+                    "Which day is the day that follows the day that follows Tomorrow?"
+                ];
+console.log(puzzle[1].length);
+
+var tab_list = document.querySelectorAll(".tab");
+var numOfTabs = tab_list.length;
+var currentTarget = "";
+var inputText = document.querySelector("#input_text");
+var clear = document.querySelector("#clear");
+var isDarkMode = 1;
+
+
+for (let i = 0, len = numOfTabs; i < len; i++) {
+	tab_list[i].addEventListener("click", SwitchTabs);
+}
+
+
+function SwitchTabs(obj) {
+    let id = obj.target.id;
+    if (id != currentTarget && id != "clear") {
+        currentTarget = id;
+        OpenPuzzleExample(id);
+    }
+    else if (id == "clear") {
+        inputText.value = "";
+        currentTarget = "";
+        DeleteAllChatWidget();
+    }
+}
+
+function OpenPuzzleExample(id) {
+    let index = parseInt(id[2]) - 1;
+    for (let j = 0, len = puzzle[index].length; j < len; j++) {
+        createChatWidget(_content = puzzle[index][j],isRobot = false);
+    }
+    inputText.value = question[index];
+}
+
+function DeleteAllChatWidget() {
+    let boxes = document.querySelectorAll(".box");
+    for (let i = 0, len = boxes.length; i < len; i++) {
+	   boxes[i].remove();
+    }
+}
+
+var switchBtn = document.querySelector(".switch-button");
+switchBtn.addEventListener("click", switchMode);
+    
+function switchMode(obj) {
+    isDarkMode = (isDarkMode + 1) % 2;
+    document.body.classList.toggle("light");
+    switchBtn.classList.toggle("switch-button_light");
+    document.querySelector("#stopBtn").classList.toggle("stopBtn_light");
+    document.querySelector("#window").classList.toggle("window_light");
+    let boxes = document.querySelectorAll(".box")
+    for (let i = 0, len = boxes.length; i < len; i++) {
+	   boxes[i].classList.toggle("box_light");
+    }
 }

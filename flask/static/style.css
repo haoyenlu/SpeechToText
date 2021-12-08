@@ -1,46 +1,145 @@
+body {
+  background-image: url('./images/bg_dark.jpg');
+  background-size: cover;
+color: #fff;
+}
+
+.light{
+  background-image: url('./images/bg_light.jpg');
+  background-size: cover;
+    color: #000;
+}
+
+.modal {
+    color: #000;
+}
+
+
+.container {
+    position: relative;
+}
 
 .window {
-    position:  relative;
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    min-width: 800px;
     max-width: 1000px;
     height: 600px;
     border-radius: 10px;
-    background-color: #fff;
+    border-collapse: separate; 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    background-color: #f8f8f8;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     overflow: hidden;
 }
+
+.window_light {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 .window .top_menu{
     width: 100%;
+    line-height: 50px;
 }
 
 .window .top_menu .title{
     text-align: center;
-    color: #02040a;
-    font-size: 40px;
+    font-size: 24px;
+    font-weight: 600;
 }
+
+.window .top_menu .title .light{
+}
+
+.tab-list {
+    margin-bottom: 10px;
+}
+
+.ex-block {
+    display: inline-block;
+    margin-left: 15px;
+    
+}
+
+.clear-block {
+    display: inline-block;
+    min-width: 60%;
+    margin-right: 15px;
+}
+
+.alignLeft {
+    text-align: left;
+}
+
+.alignRight {
+    text-align: right;
+}
+
+.tab{
+    border: 0px;
+    border-radius: 8px;
+    width: 90px;
+    height: 30px;
+    background: none;
+}
+
+.tab .light{
+}
+
+#clear {
+    background: none;
+    font-weight: 600;
+}
+
+#clear .light{
+}
+
+
+#clear:hover {
+    border: 1px #a1a1a1 solid;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.tab:hover{
+    border: 1px #a1a1a1 solid;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+}
+
 
 #chat_box {
     font-size: 15px;
     text-align: left;
+    border-top: 1px rgba(130, 130, 130, 0.3) solid;
+    border-bottom: 1px rgba(130, 130, 130, 0.3) solid;
+    height: 400px;
     min-height: 300px;
-    margin-top: 10px;
     margin-bottom: 10px;
     overflow-y: scroll; 
-    height:200px;
-    border: 1px ridge;
-    padding: 2px;
-    height: 400px;
+    padding: 15px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .box {
-    border: 2px solid #dedede;
-    background-color: #f1f1f1;
+    border: 1px solid #383838;
+    background-color: #080808;
+    color: #fff;
     border-radius: 5px;
     padding: 5px;
-    margin: 10px 0;
+    margin: 5px 0;
     float:left;
     clear: both;
     display: flexbox;
+}
+
+.box_light {
+    border: 1px solid #a1a1a1;
+    background-color: #f1f1f1;
+    color: #000;
 }
 
 
@@ -125,8 +224,22 @@
     background-color: rgba(68, 137, 216, 0.431);
 }
 
-table {
+.modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    padding: 3px;
+}
+
+
+.table {
     width: 100%;
+    margin-bottom: 0px;
+}
+
+.field{
+    font-weight: 400;
+    text-align: center;
 }
 
 #option {
@@ -143,12 +256,112 @@ table {
 }
 
 #input_text {
-    width: 100%;
-    margin-bottom: 10px;
+    background: none;
+    min-width: 700px;
+    max-width: 900px;
+    border: 1px rgba(130, 130, 130, 0.7) solid;
+    border-radius: 8px;
+    margin: 0px 15px 25px 15px;
     font-size: 16px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 #input_result {
     width: 100%;
     height: 200px;
+}
+
+#setting_but, #recordBtn, #stopBtn {
+    background: none;
+    line-height: 25px;
+    display: inline;
+    border: 0px;
+}
+
+
+#recordBtn, #stopBtn {
+    margin-right: 15px;
+}
+#stopBtn {
+    display: none;
+}
+
+.stopBtn_light {
+    color: #000;
+}
+
+#recordBtn {
+    color: #bf1b1b;
+}
+
+#reasoning {
+    background: none;
+    height: 40px;
+    font-weight: 600;
+}
+
+#reasoning:hover {
+    border: 1px #a0a0a0 solid;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+i {
+    vertical-align: middle;
+    font-size: 24px;
+}
+
+.switch-button-block {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+.switch-button {
+    background: #fff;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    
+}
+
+.switch-button_light {
+    background: #000;
+    
+}
+
+.switch-button:hover {
+    border: 2px #a1a1a1 solid;
+}
+
+.button-block {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+    display: inline-block;
+    min-width: 90%;
+    margin-right: 15px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: rgba(160, 160, 160, 0.5);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(130, 130, 130, 0.5);
 }
