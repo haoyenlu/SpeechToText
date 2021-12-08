@@ -2,12 +2,14 @@ body {
   background-image: url('./images/bg_dark.jpg');
   background-size: cover;
 color: #fff;
+    transition: 0.3s ease-out;
 }
 
 .light{
   background-image: url('./images/bg_light.jpg');
   background-size: cover;
     color: #000;
+    transition: 0.3s ease-out;
 }
 
 .modal {
@@ -16,16 +18,22 @@ color: #fff;
 
 
 .container {
-    position: relative;
+    text-align: center;
 }
 
+.container:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+
 .window {
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    min-width: 800px;
-    max-width: 1000px;
+    display: inline-block;
+	vertical-align: middle;
+    margin: 0 auto;
+    width: 800px;
     height: 600px;
     border-radius: 10px;
     border-collapse: separate; 
@@ -34,10 +42,13 @@ color: #fff;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     overflow: hidden;
+    animation: zoom ease-out 0.45s;
+    transition: 0.3s ease-out;
 }
 
 .window_light {
     background-color: rgba(255, 255, 255, 0.5);
+    transition: 0.3s ease-out;
 }
 
 .window .top_menu{
@@ -49,9 +60,6 @@ color: #fff;
     text-align: center;
     font-size: 24px;
     font-weight: 600;
-}
-
-.window .top_menu .title .light{
 }
 
 .tab-list {
@@ -86,15 +94,10 @@ color: #fff;
     background: none;
 }
 
-.tab .light{
-}
 
 #clear {
     background: none;
     font-weight: 600;
-}
-
-#clear .light{
 }
 
 
@@ -134,12 +137,15 @@ color: #fff;
     float:left;
     clear: both;
     display: flexbox;
+    animation: zoom ease-out 0.3s;
+    transition: 0.3s ease-out;
 }
 
 .box_light {
     border: 1px solid #a1a1a1;
     background-color: #f1f1f1;
     color: #000;
+    transition: 0.3s ease-out;
 }
 
 
@@ -326,11 +332,13 @@ i {
     height: 24px;
     width: 24px;
     border-radius: 50%;
+    transition: 0.3s ease-out;
     
 }
 
 .switch-button_light {
     background: #000;
+    transition: 0.3s ease-out;
     
 }
 
@@ -364,4 +372,9 @@ i {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(130, 130, 130, 0.5);
+}
+
+@keyframes zoom {
+    from {transform:scale(0.7); opacity: 0.5;} 
+    to {transform:scale(1); opacity: 1.0;}
 }
