@@ -318,7 +318,8 @@ var puzzle = [
                     "If Carlo likes basketball then Alex likes basketball.",
                     "Bob likes basketball or Alex doesn' t like basketball.",
                     "If Bob likes basketball then Carlo likes basketball.",
-                    "At least one person likes basketball."
+                    "At least one person likes basketball.",
+                    "Every person is Alex or is Bob or is Carlo."
                 ], 
                 [
                     "/* example 2 /*",
@@ -333,14 +334,24 @@ var puzzle = [
                     "Yesterday is not Saturday and Yesterday is not Thursday.",
                     "Today is not Monday and Today is not Tuesday.",
                     "Tomorrow is not Thursday and Tomorrow is not Friday."
+                ],
+                [
+                    "/* example 4 /*",
+                    "At least one man commits a crime.",
+                    "If X commits a crime then X drives a car.",
+                    "If Alex commits a crime then Bob commits a crime.",
+                    "Carl doesn't drive a car.",
+                    "Every man is Alex or is Bob or is Carl.",
+                    "Alex is not Bob and Alex is not Carl.",
+                    "Bob is not Carl."
                 ]
               ];
 var question = [
                     "Who likes basketball?",
                     "Who is a uncle of a daughter of David?",
-                    "Which day is the day that follows the day that follows Tomorrow?"
+                    "Which day is the day that follows the day that follows Tomorrow?",
+                    "Who commits a crime?"
                 ];
-console.log(puzzle[1].length);
 
 var tab_list = document.querySelectorAll(".tab");
 var numOfTabs = tab_list.length;

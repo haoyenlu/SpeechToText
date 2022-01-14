@@ -2,14 +2,13 @@ from flask import Flask, render_template , request , jsonify , send_file
 from flask_socketio import SocketIO
 from google.cloud import texttospeech
 
+import sqlite3
 import platform
 import os 
 import json
 import eventlet
 from eventlet import tpool
 from eventlet import greenthread
-
-#from SpeechClient import SpeechClientBridge
 
 
 async_mode = 'eventlet'
@@ -25,17 +24,47 @@ socketio = SocketIO(app,async_mode=async_mode)
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'google_API.json'
 exec_head = "./" if platform.system() != "Windows" else ""
 
+database = "database/database.db"
+
 
 from namespace import CustomNamespace
 socketio.on_namespace(CustomNamespace('/test'))
 
+def get_db_connection():
+    conn = sqlite3.connect(database)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+@app.route('/get_puzzle',methods=["POST"])
+def get_puzzle():
+    conn = get_db_connection()
+    puzzle = conn.execute('SELECT * FROM puzzle').fetchall()
+    conn.close()
+    return json.dumps( [dict(ix) for ix in puzzle] ) 
+
+@app.route('/submit_puzzle',methods=["GET","POST"])
+def submit_puzzle():
+    if request.method == 'POST':
+        content = request.values['content']
+        question = request.values['question']
+        useable = request.values['uesable']
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        if useable == "on":
+            cur.execute("INSERT INTO puzzle (content,question,useable) VALUES(?,?,?)",
+                        (content,question,'TRUE'))
+        else :
+            cur.execute("INSERT INTO puzzle (content,question,useable) VALUES(?,?,?)",
+                        (content,question,'FALSE'))
+        conn.commit()
+        conn.close()
+    return render_template("submit_puzzle.html")
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/puzzle')
-def puzzle():
-    return render_template('puzzle.html')
 
 @app.route('/TTSapi', methods=['POST'])
 def TTSapi():
@@ -110,7 +139,7 @@ def applic(message, filename):
         input=synthesis_input, voice=voice, audio_config=audio_config)
     with open(f'./static/audio/{filename}.mp3', 'wb') as out:
         out.write(response.audio_content)
-        print(f'Audio content written to "{filename}.mp3"')
+        #print(f'Audio content written to "{filename}.mp3"')
     return send_file(f'./static/audio/{filename}.mp3', attachment_filename=f'{filename}.mp3')
 
 

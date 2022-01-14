@@ -19,11 +19,11 @@ def getAnswer(fname):
     try:
         result = solver.solve(name, name + '_q')
     except Exception as e:
-        print(str(e))
+        #print(str(e))
         question = None
     else:
         if result == None:
-            print(solver.lasterror)
+            #print(solver.lasterror)
             question = None
         else:
             rtn = True

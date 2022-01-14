@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Puzzle Submit{% endblock %}
+
+{% block content %}
+<h1>Puzzle Submission</h1>
+<form method="post">
+    <label for="content">Puzzle Content</label>
+    <input type="text" name="content"><br><br>
+    <label for="question">Puzzle Question</label>
+    <input type="text" name="question"><br><br>
+    <label for="useable">Puzzle Usable</label>
+    <input type="checkbox" name="useable"><br>
+    <input type="submit">
+</form>
+
+
+
+{% endblock %}

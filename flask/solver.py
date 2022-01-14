@@ -145,7 +145,7 @@ class solver:
         if err != '':
             return err
         result = result.stdout.decode('utf-8')
-        print(err)
+        #print(err)
         #print(result)
         if result.__contains__('importance="error"'):
             return result

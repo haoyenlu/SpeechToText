@@ -78,7 +78,7 @@ class TextProcessor:
         chunk_parser = nltk.RegexpParser(chunk_grammar)
         chunk_data = chunk_parser.parse(tag_words)
         
-        print(chunk_data)
+        #print(chunk_data)
             
         correct_sent_list = []
         for child in chunk_data.subtrees(lambda t:t.label() == 'find'):
@@ -107,11 +107,9 @@ class TextProcessor:
         tree_list =  rd_parser.parse(sent_split)
         for tree in tree_list:
             wrong_syntax = False
-            print(tree)
-            print("Correct Grammar !!!")
+            #print(tree)
+            #print("Correct Grammar !!!")
 
-        if wrong_syntax :
-            print("Wrong Grammar !!!")
         
         return not wrong_syntax
 
@@ -144,6 +142,6 @@ class TextProcessor:
 if __name__ == '__main__':
     example = "every man is a human."
     tp = TextProcessor
-    print(tp.ace_parsing(example , "-csyntax" , "-cparaphrase" , "-cdrs"))
+    #print(tp.ace_parsing(example , "-csyntax" , "-cparaphrase" , "-cdrs"))
 
 

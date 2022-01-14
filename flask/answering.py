@@ -81,7 +81,113 @@ def _find(s: dict, nodetype: str):
                 return _find(child, nodetype)
     return None
 
-def answer(question: str, ans: tuple):
+def answer(qtn: str, ans: tuple):
+    # no_exception = True
+    # exception_content = None
+    # if not os.path.isfile(APE_PATH):
+    #     no_exception = False
+    #     exception_content = "APE path error"
+    #     return None, no_exception, exception_content
+
+    # status, s_output = subprocess.getstatusoutput(APE_PATH + ' -text "' + qtn + '" -solo paraphrase -guess')
+    # if(s_output.find("importance=\"error\"") != -1):
+    #     # TODO: add specification to error from s_output
+    #     # error s_output example: 
+    #     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    #     # <messages>                                                    #
+    #     #     <message                                                  #
+    #     #         importance="error"                                    #
+    #     #         type="sentence"                                       #
+    #     #         sentence=""                                           #
+    #     #         token=""                                              #
+    #     #         value="crime"                                         #
+    #     #         repair="Every ACE text must end with . or ? or !."/>  #
+    #     # </messages>                                                   #
+    #     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    #     no_exception = False
+    #     exception_content = "sentence errer"
+    #     return None, no_exception, exception_content
+
+
+    # sentence = s_output.replace('\n', ' ')
+    # _, syntax = subprocess.getstatusoutput(APE_PATH + ' -text "' + sentence + '" -solo syntax -guess')
+
+    # #print("syntax:", syntax)
+    
+    # tree = Syntax_Tree("[root," + syntax[1:])
+    
+    # question = None
+    # for s in tree.current_dict['root']:
+    #     if(_find(s, "query") != None):
+    #         question = s
+    #         break
+
+    # # replace qpn with answer
+    # # syntax example:           
+    # # # # # # # # # # # # # # # #
+    # #              query        #
+    # #     _________|_________   #
+    # #     question          |   #
+    # # ____|_____            |   #
+    # # np       vp           |   #
+    # # |        |            |   #
+    # # qpn      vbar         |   #
+    # # |        |            |   #
+    # # |        vcompl       |   #
+    # # |   _____|_____       |   #
+    # # |   v         np      |   #
+    # # |   |       __|__     |   #
+    # # |   |       det nbar  |   #
+    # # |   |       |   |     |   #
+    # # |   |       |   n     |   #
+    # # |   |       |   |     |   #
+    # # who commits a   crime ?   #
+    # # # # # # # # # # # # # # # #
+    # if(question == None):
+    #     no_exception = False
+    #     exception_content = "sentence error: sentence is not a question"
+    #     return None, no_exception, exception_content
+    # #print(tree.traverse(question))
+    # if(_find(question, "punct") != None):
+    #     _find(question, "punct")['punct'] = '.'
+    # if(type(ans) != type(tuple())):
+    #     no_exception = False
+    #     exception_content = "type of 'ans' should be tuple"
+    #     return None, no_exception, exception_content
+    # if(len(ans) == 0):
+    #     no_exception = False
+    #     exception_content = "tuple lenth should not be 0"
+    #     return None, no_exception, exception_content
+    # if(_find(question, "qpn") != None):
+    #     if(len(ans[0]) != 0):   #tuple第一種答案 (人名)
+    #         _find(question, "qpn")['qpn'] = ans[0][0]
+    #     # TODO: 第二種答案和第三種答案
+    #     elif(len(ans[1]) != 0): #tuple第二種答案 (class)
+    #         for x in ans[1]:
+    #             if ():
+    #                 className = x
+    #         _find(question, "qpn")['qpn'] = 'Every ' + className
+    #     # elif(len(ans[2]) != 0): #tuple第三種答案 (infered class)
+    #     #     pass
+    #     else: #空集合??                  
+    #         if(_find(question, "qpn")['qpn'].lower() == 'who'):
+    #             _find(question, "qpn")['qpn'] = 'Nobody'
+    #         else:
+    #             _find(question, "qpn")['qpn'] = 'Nothing'
+    
+            
+    # elif(_find(question, "qdet") != None):
+    #     _find(question, "qdet")['qdet'] = ans
+    # else:
+    #     no_exception = False
+    #     exception_content = "sentence error: cannot find qpn or qdet"
+    #     return None, no_exception, exception_content
+    
+
+    # response = tree.traverse(question)
+    # no_exception = True
+    # exception_content = None
+    # return response, no_exception, exception_content
     no_exception = True
     exception_content = None
     if not os.path.isfile(APE_PATH):
@@ -89,7 +195,7 @@ def answer(question: str, ans: tuple):
         exception_content = "APE path error"
         return None, no_exception, exception_content
 
-    status, s_output = subprocess.getstatusoutput(APE_PATH + ' -text "' + question + '" -solo paraphrase -guess')
+    status, s_output = subprocess.getstatusoutput(APE_PATH + ' -text "' + qtn + '" -solo paraphrase -guess')
     if(s_output.find("importance=\"error\"") != -1):
         # TODO: add specification to error from s_output
         # error s_output example: 
@@ -109,10 +215,11 @@ def answer(question: str, ans: tuple):
         return None, no_exception, exception_content
 
 
+
     sentence = s_output.replace('\n', ' ')
     _, syntax = subprocess.getstatusoutput(APE_PATH + ' -text "' + sentence + '" -solo syntax -guess')
 
-    #print("syntax:", syntax)
+    
     
     tree = Syntax_Tree("[root," + syntax[1:])
     
@@ -143,47 +250,136 @@ def answer(question: str, ans: tuple):
     # |   |       |   |     |   #
     # who commits a   crime ?   #
     # # # # # # # # # # # # # # #
-    if(question == None):
-        no_exception = False
-        exception_content = "sentence error: sentence is not a question"
-        return None, no_exception, exception_content
-    #print(tree.traverse(question))
-    if(_find(question, "punct") != None):
-        _find(question, "punct")['punct'] = '.'
-    if(type(ans) != type(tuple())):
-        no_exception = False
-        exception_content = "type of 'ans' should be tuple"
-        return None, no_exception, exception_content
-    if(len(ans) == 0):
-        no_exception = False
-        exception_content = "tuple lenth should not be 0"
-        return None, no_exception, exception_content
-    if(_find(question, "qpn") != None):
-        if(len(ans[0]) != 0):   #tuple第一種答案 (人名)
-            _find(question, "qpn")['qpn'] = ans[0][0]
-        # TODO: 第二種答案和第三種答案
-        elif(len(ans[1]) != 0): #tuple第二種答案 (class)
-            for x in ans[1]:
-                if ():
-                    className = x
-            _find(question, "qpn")['qpn'] = 'Every ' + className
-        # elif(len(ans[2]) != 0): #tuple第三種答案 (infered class)
-        #     pass
-        else: #空集合??                  
-            if(_find(question, "qpn")['qpn'].lower() == 'who'):
-                _find(question, "qpn")['qpn'] = 'Nobody'
-            else:
-                _find(question, "qpn")['qpn'] = 'Nothing'
-    
-            
-    elif(_find(question, "qdet") != None):
-        _find(question, "qdet")['qdet'] = ans
-    else:
-        no_exception = False
-        exception_content = "sentence error: cannot find qpn or qdet"
-        return None, no_exception, exception_content
-    
 
+    # 確認是否是倒裝句 #
+    if(_find(_find(question, "np"), "qpn") != None or _find(_find(question, "np"), "qdet") != None):
+        # 直述句
+        sentence = s_output.replace('\n', ' ')
+        _, syntax = subprocess.getstatusoutput(APE_PATH + ' -text "' + qtn + '" -solo syntax -guess')
+
+        tree = Syntax_Tree("[root," + syntax[1:])
+        
+        question = None
+
+        for s in tree.current_dict['root']:
+            if(_find(s, "query") != None):
+                question = s
+                break
+        
+        if(question == None):
+            no_exception = False
+            exception_content = "sentence error: sentence is not a question"
+            return None, no_exception, exception_content
+        #print(tree.traverse(question))
+        if(_find(question, "punct") != None):
+            _find(question, "punct")['punct'] = '.'
+        if(type(ans) != type(tuple())):
+            no_exception = False
+            exception_content = "type of 'ans' should be tuple"
+            return None, no_exception, exception_content
+        if(len(ans) == 0):
+            no_exception = False
+            exception_content = "tuple lenth should not be 0"
+            return None, no_exception, exception_content
+        if(_find(question, "qpn") != None):
+            # 第一種答案
+            if(len(ans[0]) != 0):   #tuple第一種答案 (人名)
+                _find(question, "qpn")['qpn'] = ans[0][0]
+            # 第二種答案和第三種答案
+            elif(len(ans[1]) != 0): #tuple第二種答案 (class)
+                x = ans[1][0]
+                for x in ans[1]:
+                    if (x.strip() != ""):
+                        className = x
+                _find(question, "qpn")['qpn'] = 'Every ' + className
+            # elif(len(ans[2]) != 0): #tuple第三種答案 (infered class)
+            #     pass
+            else: #空集合??                  
+                if(_find(question, "qpn")['qpn'].lower() == 'who'):
+                    _find(question, "qpn")['qpn'] = 'Nobody'
+                else:
+                    _find(question, "qpn")['qpn'] = 'Nothing'
+        elif(_find(question, "qdet") != None):
+            # 第一種答案
+            if(len(ans[0]) != 0):   #tuple第一種答案 (人名)
+                _find(question, "np")['np'] = ans[0][0]
+            # 第二種答案和第三種答案
+            elif(len(ans[1]) != 0): #tuple第二種答案 (class)
+                x = ans[1][0]
+                for x in ans[1]:
+                    if (x.strip() != ""):
+                        className = x
+                _find(question, "np")['np'] = 'Every ' + className
+            # elif(len(ans[2]) != 0): #tuple第三種答案 (infered class)
+            #     pass
+            else: #空集合??                  
+                if(_find(question, "qdet")['qdet'].lower() == 'who'):
+                    _find(question, "np")['np'] = 'Nobody'
+                else:
+                    _find(question, "np")['np'] = 'Nothing'
+        else:
+            no_exception = False
+            exception_content = "sentence error: cannot find qpn or qdet"
+            return None, no_exception, exception_content
+    elif(_find(_find(question, "vp"), "qpn") != None or _find(_find(question, "vp"), "qdet") != None):
+        # 倒裝句
+        if(question == None):
+            no_exception = False
+            exception_content = "sentence error: sentence is not a question"
+            return None, no_exception, exception_content
+        #print(tree.traverse(question))
+        if(_find(question, "punct") != None):
+            _find(question, "punct")['punct'] = '.'
+        if(type(ans) != type(tuple())):
+            no_exception = False
+            exception_content = "type of 'ans' should be tuple"
+            return None, no_exception, exception_content
+        if(len(ans) == 0):
+            no_exception = False
+            exception_content = "tuple lenth should not be 0"
+            return None, no_exception, exception_content
+        if(_find(question, "qpn") != None):
+            # 第一種答案
+            if(len(ans[0]) != 0):   #tuple第一種答案 (人名)
+                _find(question, "qpn")['qpn'] = ans[0][0]
+            # 第二種答案和第三種答案
+            elif(len(ans[1]) != 0): #tuple第二種答案 (class)
+                x = ans[1][0]
+                for x in ans[1]:
+                    if (x.strip() != ""):
+                        className = x
+                _find(question, "qpn")['qpn'] = 'Every ' + className
+            # elif(len(ans[2]) != 0): #tuple第三種答案 (infered class)
+            #     pass
+            else: #空集合??                  
+                if(_find(question, "qpn")['qpn'].lower() == 'who'):
+                    _find(question, "qpn")['qpn'] = 'Nobody'
+                else:
+                    _find(question, "qpn")['qpn'] = 'Nothing'
+        elif(_find(question, "qdet") != None):
+            # 第一種答案
+            if(len(ans[0]) != 0):   #tuple第一種答案 (人名)
+                _find(question, "qdet")['qdet'] = ans[0][0]
+            # 第二種答案和第三種答案
+            elif(len(ans[1]) != 0): #tuple第二種答案 (class)
+                x = ans[1][0]
+                for x in ans[1]:
+                    if (x.strip() != ""):
+                        className = x
+                _find(question, "qdet")['qdet'] = 'Every ' + className
+            # elif(len(ans[2]) != 0): #tuple第三種答案 (infered class)
+            #     pass
+            else: #空集合??                  
+                if(_find(question, "qdet")['qdet'].lower() == 'who'):
+                    _find(question, "qdet")['qdet'] = 'Nobody'
+                else:
+                    _find(question, "qdet")['qdet'] = 'Nothing'
+        else:
+            no_exception = False
+            exception_content = "sentence error: cannot find qpn or qdet"
+            return None, no_exception, exception_content
+    #print(_find(question, "vp"))
+        
     response = tree.traverse(question)
     no_exception = True
     exception_content = None

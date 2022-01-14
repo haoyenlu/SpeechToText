@@ -48,13 +48,15 @@ class CustomNamespace(Namespace):
                 f.write(line)
                 f.write('\n')
 
-        from reasoning import getAnswer
-        reasoner_answer = getAnswer(filename)
-        print(reasoner_answer)
+        try:
+            from reasoning import getAnswer
+            reasoner_answer = getAnswer(filename)
 
-        from answering import answer
-        if reasoner_answer[0] is True:
-            response = answer(reasoner_answer[2],reasoner_answer[1])
-            emit('reasoner_result',response)
-        else :
-            emit('reasoner_result',"I don't have an answer.")
+            from answering import answer
+            if reasoner_answer[0] is True:
+                response = answer(reasoner_answer[2],reasoner_answer[1])
+                emit('reasoner_result',response)
+            else :
+                emit('reasoner_result',"I don't know the answer.");
+        except:
+            emit('reasoner_result',"Get an error! check if the puzzle is correct.");
